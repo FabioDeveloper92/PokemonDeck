@@ -28,6 +28,7 @@ export function PokemonListRecap({
     <Container>
       <Row>
         {pokemonList.map((pokemon: PokemonDetail, index: number) => (
+          
           <Col key={index} xs={12} sm={12} md={3}>
             <Card
               className="shadow mb-3"
