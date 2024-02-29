@@ -1,13 +1,8 @@
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import {
-  Ability,
-  Type,
-  PokemonDetail,
-} from "../../../model/api/pokemon-detail.model";
-import { Card } from "react-bootstrap";
-import NoImage from "../../../../../img/no-image.svg";
+import { useState, useEffect, Fragment } from "react";
+import ReactPaginate from "react-paginate";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import { PokemonDetail } from "../../../model/api/pokemon-detail.model";
+import { PokemonCardComponent } from "./pokemon-card.components";
 
 class PokemonListRecapProps {
   pokemonList: PokemonDetail[];
@@ -19,68 +14,70 @@ export function PokemonListRecap({
   pokemonList,
   onAddPokemon,
 }: PokemonListRecapProps) {
-  
-  function onSelectPokemon(pokemon: PokemonDetail): void {
+  const ITEMS_PER_PAGE = 4;
+  const [originalList, setOriginalList] = useState<PokemonDetail[]>(null);
+  const [filterList, setFilterList] = useState<PokemonDetail[]>(null);
+  const [pageCount, setPageCount] = useState(0);
+
+  useEffect(() => {
+    setOriginalList(pokemonList);
+    setFilterList(pokemonList.slice(0, ITEMS_PER_PAGE));
+
+    if (pokemonList && pokemonList.length > 0)
+      setPageCount(pokemonList.length / ITEMS_PER_PAGE);
+    else setPageCount(0);
+  }, [pokemonList]);
+
+  const onSelectPokemon = (pokemon: PokemonDetail): void => {
     onAddPokemon(pokemon);
-  }
+  };
+
+  const onPageChange = (event) => {
+    const newOffset = (event.selected * ITEMS_PER_PAGE) % originalList.length;
+    let updOriginalList = [...originalList];
+    let updFilterList = updOriginalList.splice(newOffset, ITEMS_PER_PAGE);
+    setFilterList(updFilterList);
+  };
 
   return (
     <Container>
       <Row>
-        {pokemonList.map((pokemon: PokemonDetail, index: number) => (
-          
-          <Col key={index} xs={12} sm={12} md={3}>
-            <Card
-              className="shadow mb-3"
-              style={{ cursor: "pointer" }}
-              onClick={(_) => onSelectPokemon(pokemon)}
-            >
-              <Card.Img
-                className="py-2 bg-dark bg-gradient"
-                height={125}
-                title={pokemon.name}
-                alt={pokemon.name}
-                src={pokemon.sprites.other.dream_world.front_default ?? NoImage}
-              ></Card.Img>
-              <Card.Body>
-                <Card.Subtitle className="mb-2">
-                  {pokemon.types.map((type: Type, indexType: number) => (
-                    <span
-                      key={indexType}
-                      className={
-                        "badge fw-normal me-2 background-color-" +
-                        type.type.name
-                      }
-                    >
-                      {type.type.name}
-                    </span>
-                  ))}
-                </Card.Subtitle>
-                <Card.Title className="mb-3 h4 text-capitalize">
-                  {pokemon.name}
-                </Card.Title>
-                <Card.Text className="mb-1 fw-normal text-start">
-                  <small>Experience:</small> {pokemon.base_experience ?? "N.D."}
-                </Card.Text>
-                <Card.Text className="mb-2 fw-normal text-start">
-                  <ul className="list-group list-group-numbered">
-                    {pokemon.abilities.map(
-                      (ability: Ability, indexAbility: number) => (
-                        <li
-                          key={indexAbility}
-                          className="list-group-item align-items-start"
-                        >
-                          {ability.ability.name}
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </Card.Text>
-              </Card.Body>
-              <Card.Footer>Add</Card.Footer>
-            </Card>
+        {originalList && originalList.length > 0 && (
+          <Col xs={12} className="mb-3">
+            We are found <b>{originalList.length}</b> pokemon.
           </Col>
-        ))}
+        )}
+        {filterList &&
+          filterList.length > 0 &&
+          filterList.map((pokemon: PokemonDetail, index: number) => (
+            <Fragment key={index}>
+              <PokemonCardComponent
+                pokemon={pokemon}
+                onSelectPokemon={onSelectPokemon}
+              />
+            </Fragment>
+          ))}
+
+        {originalList && originalList.length > 0 && (
+          <ReactPaginate
+            className="pagination justify-content-center mt-4"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            activeLinkClassName="active"
+            activeClassName=""
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={onPageChange}
+            pageRangeDisplayed={5}
+            pageCount={pageCount}
+            previousLabel="< previous"
+            renderOnZeroPageCount={null}
+          />
+        )}
       </Row>
     </Container>
   );

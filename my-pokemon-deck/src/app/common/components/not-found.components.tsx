@@ -1,4 +1,4 @@
-import { PageHeaderComponent } from "./page-header.componts";
+import { PageHeaderComponent } from "./page-header.componets";
 
 export function NotFoundComponent() {
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getAllPokemonName } from "../../services/pokemon.service";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -7,9 +7,11 @@ import { InputSearchComponent } from "./components/input-search.components";
 import { PokemonListRecap } from "./components/pokemon-list-recap.components";
 import { PokemonBaseData } from "../../model/api/pokemon-response.model";
 import { PokemonDetail } from "../../model/api/pokemon-detail.model";
+import { PageHeaderComponent } from "../../../common/components/page-header.componets";
 import {
   addMyDeck,
   checkIsAvailableToAdd,
+  removeFirstPokemonFromMyDesk,
 } from "../../services/storage.service";
 import { Button, Modal } from "react-bootstrap";
 import { AddMyDeckResultEnum } from "../../model/enum/AddMyDeckResultEnum.enum";
@@ -70,7 +72,7 @@ export function SearchContainer() {
 
   function onAddPokemon(pokemon: PokemonDetail) {
     const resultCheck = checkIsAvailableToAdd(pokemon);
-    debugger;
+
     if (resultCheck === AddMyDeckResultEnum.MaxCapacity) {
       setPokemonToAdd(pokemon);
       setResultAfterInsertMsg(resultCheck);
@@ -91,12 +93,12 @@ export function SearchContainer() {
 
   return (
     <>
-      <Container className="mt-4">
+      <PageHeaderComponent
+        title="Welcome to MyPokemon Deck"
+        subtitle="Search your pokemon, and start the adventure!"
+      />
+      <Container className="mt-3 mb-3">
         <Row>
-          <Col xs={12} className="text-center mb-2">
-            <h1 className="h2">Search your favourite Pokemon</h1>
-            <h3 className="h5">Gotta Catch' Em All</h3>
-          </Col>
           <Col xs={12}>
             <InputSearchComponent
               pokemonBaseData={pokemonNames}
@@ -124,7 +126,8 @@ export function SearchContainer() {
           )}
           {resultAfterInsertMsg === AddMyDeckResultEnum.MaxCapacity && (
             <>
-              You have reached the maximum capacity of your deck.<br/>
+              You have reached the maximum capacity of your deck.
+              <br />
               If you continue the first pokemon inserted will be removed
             </>
           )}
