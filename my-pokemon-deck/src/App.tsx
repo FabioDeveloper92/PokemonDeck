@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { NavBarComponent } from "./app/common/components/nav-bar.components";
-import { SearchContainer } from "./app/pokemon/search/search.container";
-import { DeckContainer } from "./app/pokemon/deck/deck.container";
-import { DetailContainer } from "./app/pokemon/detail/detail.container";
+import { SearchContainer } from "./app/pokemon/components/search/search.container";
+import { DeckContainer } from "./app/pokemon/components/deck/deck.container";
+import { DetailContainer } from "./app/pokemon/components/detail/detail.container";
 
 function App() {
   return (
