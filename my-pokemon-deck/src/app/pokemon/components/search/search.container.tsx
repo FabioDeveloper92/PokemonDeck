@@ -7,7 +7,10 @@ import { InputSearchComponent } from "./components/input-search.components";
 import { PokemonListRecap } from "./components/pokemon-list-recap.components";
 import { PokemonBaseData } from "../../model/api/pokemon-response.model";
 import { PokemonDetail } from "../../model/api/pokemon-detail.model";
-import { addMyDeck } from "../../services/storage.service";
+import {
+  addMyDeck,
+  checkIsAvailableToAdd,
+} from "../../services/storage.service";
 import { Button, Modal } from "react-bootstrap";
 import { AddMyDeckResultEnum } from "../../model/enum/AddMyDeckResultEnum.enum";
 
@@ -66,15 +69,21 @@ export function SearchContainer() {
   };
 
   function onAddPokemon(pokemon: PokemonDetail) {
-    const result = addMyDeck(pokemon);
+    const resultCheck = checkIsAvailableToAdd(pokemon);
+    debugger;
+    if (resultCheck === AddMyDeckResultEnum.MaxCapacity) {
+      setPokemonToAdd(pokemon);
+      setResultAfterInsertMsg(resultCheck);
+    } else if (resultCheck === AddMyDeckResultEnum.Success) {
+      const result = addMyDeck(pokemon);
+      setResultAfterInsertMsg(result);
+    } else setResultAfterInsertMsg(resultCheck);
 
-    if (result === AddMyDeckResultEnum.MaxCapacity) setPokemonToAdd(pokemon);
-
-    setResultAfterInsertMsg(result);
     setShowModalResultAfterInsert(true);
   }
 
-  function onForceAddPokemon(pokemon: PokemonDetail) {
+  function onForceAddPokemon() {
+    removeFirstPokemonFromMyDesk();
     const result = addMyDeck(pokemonToAdd);
     setResultAfterInsertMsg(result);
     setShowModalResultAfterInsert(true);
@@ -115,8 +124,8 @@ export function SearchContainer() {
           )}
           {resultAfterInsertMsg === AddMyDeckResultEnum.MaxCapacity && (
             <>
-              You have reached the maximum capacity of your deck, if you
-              continue the first pokemon inserted will be removed
+              You have reached the maximum capacity of your deck.<br/>
+              If you continue the first pokemon inserted will be removed
             </>
           )}
           {resultAfterInsertMsg === AddMyDeckResultEnum.PokemonFoundError && (
@@ -127,11 +136,11 @@ export function SearchContainer() {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onCloseModalPokemonAddResult}>
+          <Button variant="danger" onClick={onCloseModalPokemonAddResult}>
             Close
           </Button>
           {resultAfterInsertMsg === AddMyDeckResultEnum.MaxCapacity && (
-            <Button variant="secondary" onClick={(_) => onForceAddPokemon()}>
+            <Button variant="primary" onClick={(_) => onForceAddPokemon()}>
               Continue
             </Button>
           )}
