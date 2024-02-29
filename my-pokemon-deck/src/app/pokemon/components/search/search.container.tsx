@@ -7,10 +7,19 @@ import { InputSearchComponent } from "./components/input-search.components";
 import { PokemonListRecap } from "./components/pokemon-list-recap.components";
 import { PokemonBaseData } from "../../model/api/pokemon-response.model";
 import { PokemonDetail } from "../../model/api/pokemon-detail.model";
+import { addMyDeck } from "../../services/storage.service";
+import { Button, Modal } from "react-bootstrap";
+import { AddMyDeckResultEnum } from "../../model/enum/AddMyDeckResultEnum.enum";
 
 export function SearchContainer() {
   const [pokemonNames, setPokemonNames] = useState<PokemonBaseData[]>([]);
   const [pokemonList, setPokemonList] = useState<PokemonDetail[]>([]);
+
+  const [showModalResultAfterInsert, setShowModalResultAfterInsert] =
+    useState<boolean>(false);
+  const [resultAfterInsertMsg, setResultAfterInsertMsg] =
+    useState<AddMyDeckResultEnum>(AddMyDeckResultEnum.GenericError);
+  const [pokemonToAdd, setPokemonToAdd] = useState<PokemonDetail>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -51,23 +60,83 @@ export function SearchContainer() {
     return responses;
   }
 
+  const onCloseModalPokemonAddResult = () => {
+    setShowModalResultAfterInsert(false);
+    setPokemonToAdd(null);
+  };
+
+  function onAddPokemon(pokemon: PokemonDetail) {
+    const result = addMyDeck(pokemon);
+
+    if (result === AddMyDeckResultEnum.MaxCapacity) setPokemonToAdd(pokemon);
+
+    setResultAfterInsertMsg(result);
+    setShowModalResultAfterInsert(true);
+  }
+
+  function onForceAddPokemon(pokemon: PokemonDetail) {
+    const result = addMyDeck(pokemonToAdd);
+    setResultAfterInsertMsg(result);
+    setShowModalResultAfterInsert(true);
+  }
+
   return (
-    <Container className="mt-4">
-      <Row>
-        <Col xs={12} className="text-center mb-2">
-          <h1 className="h2">Search your favourite Pokemon</h1>
-          <h3 className="h5">Gotta Catch' Em All</h3>
-        </Col>
-        <Col xs={12}>
-          <InputSearchComponent
-            pokemonBaseData={pokemonNames}
-            onSelectPokemon={onSelectName}
-          />
-        </Col>
-        <Col xs={12}>
-          <PokemonListRecap pokemonList={pokemonList} />
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Container className="mt-4">
+        <Row>
+          <Col xs={12} className="text-center mb-2">
+            <h1 className="h2">Search your favourite Pokemon</h1>
+            <h3 className="h5">Gotta Catch' Em All</h3>
+          </Col>
+          <Col xs={12}>
+            <InputSearchComponent
+              pokemonBaseData={pokemonNames}
+              onSelectPokemon={onSelectName}
+            />
+          </Col>
+          <Col xs={12}>
+            <PokemonListRecap
+              pokemonList={pokemonList}
+              onAddPokemon={onAddPokemon}
+            />
+          </Col>
+        </Row>
+      </Container>
+      <Modal
+        show={showModalResultAfterInsert}
+        onHide={onCloseModalPokemonAddResult}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Insert Pokemon</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {resultAfterInsertMsg === AddMyDeckResultEnum.Success && (
+            <>Pokemon added to your deck successfully</>
+          )}
+          {resultAfterInsertMsg === AddMyDeckResultEnum.MaxCapacity && (
+            <>
+              You have reached the maximum capacity of your deck, if you
+              continue the first pokemon inserted will be removed
+            </>
+          )}
+          {resultAfterInsertMsg === AddMyDeckResultEnum.PokemonFoundError && (
+            <>Pokemon already present in your deck</>
+          )}
+          {resultAfterInsertMsg === AddMyDeckResultEnum.GenericError && (
+            <>An error occurred, try again or contact support</>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onCloseModalPokemonAddResult}>
+            Close
+          </Button>
+          {resultAfterInsertMsg === AddMyDeckResultEnum.MaxCapacity && (
+            <Button variant="secondary" onClick={(_) => onForceAddPokemon()}>
+              Continue
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
