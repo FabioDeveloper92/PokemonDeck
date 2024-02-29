@@ -60,7 +60,6 @@ export function DeckContainer() {
 
   function onConfirmRemovePokemon() {
     
-    debugger;
     let result = removePokemonFromMyDesk(pokemonToRemove);
     if (result) {
       loadMyDesk();
