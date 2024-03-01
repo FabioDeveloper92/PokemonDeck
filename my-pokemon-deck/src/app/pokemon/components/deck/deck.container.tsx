@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -10,7 +10,9 @@ import {
   removePokemonFromMyDesk,
 } from "../../services/storage.service";
 import { PokemonDeckCard } from "./components/pokemon-deck-card.components";
+import { StarFill } from "react-bootstrap-icons";
 import { Button, Modal } from "react-bootstrap";
+import { PageHeaderComponent } from "../../../common/components/page-header.componets";
 
 export function DeckContainer() {
   const [myDeck, setMyDeck] = useState<PokemonDetail[]>([]);
@@ -52,14 +54,13 @@ export function DeckContainer() {
     setPokemonToRemove(null);
   };
 
-  function onRemovePokemon(pokemon: PokemonDetail) {
+  const onRemovePokemon = (pokemon: PokemonDetail) => {
     setPokemonToRemove(pokemon);
     setRemoveMsg(RemoveMyDeckResultEnum.ToConfirm);
     setShowModalRemovePokemon(true);
-  }
+  };
 
-  function onConfirmRemovePokemon() {
-    
+  const onConfirmRemovePokemon = () => {
     let result = removePokemonFromMyDesk(pokemonToRemove);
     if (result) {
       loadMyDesk();
@@ -67,35 +68,40 @@ export function DeckContainer() {
     } else {
       setRemoveMsg(RemoveMyDeckResultEnum.GenericError);
     }
-  }
+  };
 
   return (
     <>
+      <PageHeaderComponent
+        title="My Deck"
+        subtitle="Check your pokemon and experience!"
+      />
       <Container>
         <Row>
-          <Col xs={12} className="text-center mb-2">
-            <h1 className="h2">Your deck</h1>
-            <h3 className="h5">
-              Status:
-              {myDeck.length === 0 && <>Void</>}
-              {myDeck.length < MAX_ITEM_DECK && <>To complete</>}
-              {myDeck.length === MAX_ITEM_DECK && <>Completed</>}
+          <Col xs={12} className="mb-2">
+            <div className="h5">
+              Your deck is
+              {myDeck.length === 0 && <> Empty</>}
+              {myDeck.length < MAX_ITEM_DECK && <> to complete</>}
+              {myDeck.length === MAX_ITEM_DECK && <> Full</>}(
               <span className={statusClassName}>
                 {myDeck.length}/{MAX_ITEM_DECK}
               </span>
-              <br />
-              TOTAL BASE EXPERIENCE {totalBaseExperience}
-            </h3>
+              )
+            </div>
+            <div>
+              Your pokemon experience is {totalBaseExperience} <StarFill className="mb-1 text-primary" />
+            </div>
           </Col>
           {myDeck &&
             myDeck.length > 0 &&
             myDeck.map((pokemon: PokemonDetail, index: number) => (
-              <React.Fragment key={index}>
+              <Fragment key={index}>
                 <PokemonDeckCard
                   pokemon={pokemon}
                   onRemovePokemon={onRemovePokemon}
                 />
-              </React.Fragment>
+              </Fragment>
             ))}
         </Row>
       </Container>

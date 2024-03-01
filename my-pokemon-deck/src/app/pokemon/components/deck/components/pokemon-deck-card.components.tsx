@@ -1,12 +1,12 @@
 import Col from "react-bootstrap/Col";
 import {
   Ability,
-  Type,
   PokemonDetail,
 } from "../../../model/api/pokemon-detail.model";
 import { Button, Card } from "react-bootstrap";
-import NoImage from "../../../../../img/no-image.svg";
 import { Link } from "react-router-dom";
+import NoImage from "../../../../../img/no-image.svg";
+import { PokemonTypesComponent } from "../../common/pokemon-types.components";
 
 class PokemonDeckCardProps {
   pokemon: PokemonDetail;
@@ -17,19 +17,14 @@ class PokemonDeckCardProps {
 export function PokemonDeckCard({
   pokemon,
   onRemovePokemon,
-  onGoToDetail,
 }: PokemonDeckCardProps) {
   const onClickRemove = () => {
     onRemovePokemon(pokemon);
   };
 
-  const onClickGoToDetail = () => {
-    onGoToDetail(pokemon);
-  };
-
   return (
-    <Col xs={12} sm={12} md={3}>
-      <Card className="shadow mb-3" style={{ cursor: "pointer" }}>
+    <Col xs={12} sm={12} md={3} className="d-flex align-items-stretch">
+      <Card className="shadow mb-3 w-100" style={{ cursor: "pointer" }}>
         <Card.Img
           className="py-2 bg-dark bg-gradient"
           height={125}
@@ -39,16 +34,7 @@ export function PokemonDeckCard({
         ></Card.Img>
         <Card.Body>
           <Card.Subtitle className="mb-2">
-            {pokemon.types.map((type: Type, indexType: number) => (
-              <span
-                key={indexType}
-                className={
-                  "badge fw-normal me-2 background-color-" + type.type.name
-                }
-              >
-                {type.type.name}
-              </span>
-            ))}
+            <PokemonTypesComponent types={pokemon.types} />
           </Card.Subtitle>
           <Card.Title className="mb-3 h4 text-capitalize">
             {pokemon.name}
@@ -73,14 +59,20 @@ export function PokemonDeckCard({
         </Card.Body>
         <Card.Footer>
           <Button
-            className="btn btn-danger me-2"
+            variant="outline-danger"
+            className="me-2"
             onClick={(_) => onClickRemove()}
           >
             Remove
           </Button>
-          <Link className="btn btn-primary" to={`/detail/${pokemon.name}`}>
-            Detail
-          </Link>
+          <Button variant="primary" className="me-2">
+            <Link
+              to={`/detail/${pokemon.id}`}
+              className="text-white text-decoration-none"
+            >
+              Detail
+            </Link>
+          </Button>
         </Card.Footer>
       </Card>
     </Col>

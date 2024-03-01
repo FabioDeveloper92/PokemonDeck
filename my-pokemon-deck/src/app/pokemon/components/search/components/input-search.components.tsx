@@ -1,7 +1,7 @@
 import { useState } from "react";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
-import { Search } from 'react-bootstrap-icons';
+import { Search } from "react-bootstrap-icons";
 import { PokemonBaseData } from "../../../model/api/pokemon-response.model";
 import { Button, InputGroup } from "react-bootstrap";
 
@@ -66,6 +66,7 @@ export function InputSearchComponent({
       <InputGroup>
         <FloatingLabel controlId="floatingInput" label="Search by Name">
           <Form.Control
+            id="TEST"
             type="text"
             autoComplete="false"
             placeholder="Name"
@@ -75,7 +76,9 @@ export function InputSearchComponent({
             onChange={handleInputChange}
           />
         </FloatingLabel>
-        <Button type="submit"><Search/></Button>
+        <Button type="submit">
+          <Search />
+        </Button>
 
         {showSuggestionsPanel &&
           pokemonDataFiltered &&

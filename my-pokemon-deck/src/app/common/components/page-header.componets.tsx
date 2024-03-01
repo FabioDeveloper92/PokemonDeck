@@ -10,7 +10,7 @@ export function PageHeaderComponent({
   subtitle,
 }: PageHeaderComponentProps) {
   return (
-    <Container fluid>
+    <Container fluid className="mb-3">
       <Row>
         <Col xs={12} className="p-0">
           <div className="page-header-image">

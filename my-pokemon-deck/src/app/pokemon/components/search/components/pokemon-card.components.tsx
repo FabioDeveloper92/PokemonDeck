@@ -1,11 +1,11 @@
 import { Card, Col } from "react-bootstrap";
 import {
   Ability,
-  Type,
   PokemonDetail,
 } from "../../../model/api/pokemon-detail.model";
 import { PlusCircle } from "react-bootstrap-icons";
 import NoImage from "../../../../../img/no-image.svg";
+import { PokemonTypesComponent } from "../../common/pokemon-types.components";
 
 class PokemonCardComponentProps {
   pokemon: PokemonDetail;
@@ -36,16 +36,7 @@ export function PokemonCardComponent({
         ></Card.Img>
         <Card.Body>
           <Card.Subtitle className="mb-2">
-            {pokemon.types.map((type: Type, indexType: number) => (
-              <span
-                key={indexType}
-                className={
-                  "badge fw-normal me-2 background-color-" + type.type.name
-                }
-              >
-                {type.type.name}
-              </span>
-            ))}
+            <PokemonTypesComponent types={pokemon.types} />
           </Card.Subtitle>
           <Card.Title className="mb-3 h4 text-capitalize">
             {pokemon.name}

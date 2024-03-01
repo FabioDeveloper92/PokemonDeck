@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { NavBarComponent } from "./app/common/components/nav-bar.components";
 import { SearchContainer } from "./app/pokemon/components/search/search.container";
@@ -14,7 +13,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<SearchContainer />}></Route>
           <Route exact path="/deck" element={<DeckContainer />}></Route>
-          <Route exact path="/detail/:pokemonname" element={<DetailContainer />}></Route>
+          <Route exact path="/detail/:id" element={<DetailContainer />}></Route>
           <Route path="*" element={<NotFoundComponent />}></Route>
         </Routes>
       </div>

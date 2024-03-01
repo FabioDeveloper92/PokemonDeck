@@ -51,7 +51,7 @@ export function removePokemonFromMyDesk(pokemon: PokemonDetail): boolean {
 
   let myDeckObj: PokemonDetail[] = JSON.parse(myDeck);
 
-  let index = myDeckObj.findIndex((x) => x.id === pokemon.id);;
+  let index = myDeckObj.findIndex((x) => x.id === pokemon.id);
   myDeckObj.splice(index, 1);
 
   let myDeckStr = JSON.stringify(myDeckObj);
@@ -66,4 +66,14 @@ export function getMyDeck(): PokemonDetail[] {
   if (myDeck) myDeckObj = JSON.parse(myDeck);
 
   return myDeckObj;
+}
+
+export function getPokemonDetailFromMyDeck(id: number): PokemonDetail {
+  let myDeck = localStorage.getItem(MYDECK_KEY);
+
+  if (!myDeck) return null;
+
+  let myDeckObj = JSON.parse(myDeck);
+
+  return myDeckObj.find((x) => x.id === id);
 }

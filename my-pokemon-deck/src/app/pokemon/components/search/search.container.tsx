@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getAllPokemonName } from "../../services/pokemon.service";
+import { makeMultipleAPICalls } from "../../services/generic.service";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -45,26 +46,6 @@ export function SearchContainer() {
     multipleAPICalls();
   }
 
-  async function makeAPICall(endpoint: string): Promise<PokemonDetail> {
-    const response = await fetch(endpoint);
-
-    if (response.ok) {
-      const pokemonResponse = response.json() as Promise<PokemonDetail>;
-      return await pokemonResponse;
-    }
-
-    return null;
-  }
-
-  async function makeMultipleAPICalls(
-    endpoints: string[]
-  ): Promise<PokemonDetail[]> {
-    const promises = endpoints.map(makeAPICall);
-    const responses = await Promise.all(promises);
-
-    return responses;
-  }
-
   const onCloseModalPokemonAddResult = () => {
     setShowModalResultAfterInsert(false);
     setPokemonToAdd(null);
@@ -97,7 +78,7 @@ export function SearchContainer() {
         title="Welcome to MyPokemon Deck"
         subtitle="Search your pokemon, and start the adventure!"
       />
-      <Container className="mt-3 mb-3">
+      <Container className="mb-3">
         <Row>
           <Col xs={12}>
             <InputSearchComponent
@@ -118,7 +99,7 @@ export function SearchContainer() {
         onHide={onCloseModalPokemonAddResult}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Insert Pokemon</Modal.Title>
+          <Modal.Title>Add Pokemon</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {resultAfterInsertMsg === AddMyDeckResultEnum.Success && (
@@ -128,7 +109,7 @@ export function SearchContainer() {
             <>
               You have reached the maximum capacity of your deck.
               <br />
-              If you continue the first pokemon inserted will be removed
+              If you continue the first pokemon inserted will be removed. Do you want continue?
             </>
           )}
           {resultAfterInsertMsg === AddMyDeckResultEnum.PokemonFoundError && (
