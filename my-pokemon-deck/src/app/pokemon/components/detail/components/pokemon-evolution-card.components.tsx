@@ -6,6 +6,7 @@ import NoImage from "../../../../../img/no-image.svg";
 import { getPokemonDetail } from "../../../services/pokemon.service";
 import { PokemonTypesComponent } from "../../common/pokemon-types.components";
 import { PokemonDetailTitleComponent } from "./pokemon-detail-title.components";
+import { Link } from "react-router-dom";
 
 class PokemonEvolutionsCardComponentProps {
   species: Species;
@@ -23,14 +24,17 @@ export function PokemonEvolutionsCardComponent({
     };
 
     init();
-  }, []);
+  }, [species]);
 
   return (
     <>
-      {species && (
-        <li className="list-group-item border-0">
-          <Card style={{ minWidth: "175px" }}>
-            {pokemon ? (
+      <li className="list-group-item border-0">
+        {pokemon && (
+          <Card style={{ minWidth: "175px", cursor: "pointer" }}>
+            <Link
+              to={`/detail/${pokemon.id}`}
+              className="text-decoration-none text-reset"
+            >
               <Card.Img
                 className="py-2 bg-dark bg-gradient"
                 height={125}
@@ -39,32 +43,36 @@ export function PokemonEvolutionsCardComponent({
                 src={
                   pokemon.sprites?.other?.dream_world?.front_default ?? NoImage
                 }
-              ></Card.Img>
-            ) : (
-              <Card.Img
-                className="py-2 bg-dark bg-gradient"
-                height={125}
-                title={species.name}
-                alt={species.name}
-                src={NoImage}
-              ></Card.Img>
-            )}
-            <Card.Body>
-              <div className="mb-3 text-center text-capitalize">
-                {pokemon ? (
+              />
+              <Card.Body>
+                <div className="mb-3 text-center text-capitalize">
                   <PokemonDetailTitleComponent
                     pokemon={pokemon}
                     titleType="h5"
                   />
-                ) : (
-                  <>{species.name}</>
-                )}
+                </div>
+                <PokemonTypesComponent types={pokemon?.types} />
+              </Card.Body>
+            </Link>
+          </Card>
+        )}
+        {!pokemon && species && (
+          <Card style={{ minWidth: "175px" }}>
+            <Card.Img
+              className="py-2 bg-dark bg-gradient"
+              height={125}
+              title={species.name}
+              alt={species.name}
+              src={NoImage}
+            />
+            <Card.Body>
+              <div className="mb-3 text-center text-capitalize">
+                {species.name}
               </div>
-              <PokemonTypesComponent types={pokemon?.types} />
             </Card.Body>
           </Card>
-        </li>
-      )}
+        )}
+      </li>
     </>
   );
 }

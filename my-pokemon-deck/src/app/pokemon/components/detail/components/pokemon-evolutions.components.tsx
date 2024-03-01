@@ -13,7 +13,7 @@ export function PokemonEvolutionsComponent({
     <>
       {evolutions && (
         <>
-          <div className="mb-2 text-start">Evolutions</div>
+          <div className="mb-2 text-start h4">Evolutions</div>
           <ul className="list-group list-group-horizontal-md d-md-inline-flex">
             <PokemonEvolutionsCardComponent
               species={evolutions.chain.species}

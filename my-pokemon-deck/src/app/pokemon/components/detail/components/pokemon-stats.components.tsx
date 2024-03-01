@@ -18,7 +18,7 @@ export function PokemonStatsComponent({ stats }: PokemonStatsComponentProps) {
     <>
       {stats && (
         <>
-          <div className="mb-2">Stats</div>
+          <div className="mb-2 h4">Stats</div>
           {stats.map((stat: Stat, index: number) => (
             <div key={index} className="mb-4">
               <ProgressBar

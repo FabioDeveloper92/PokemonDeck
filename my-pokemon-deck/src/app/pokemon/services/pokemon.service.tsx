@@ -25,7 +25,18 @@ export async function getPokemonDetail(name: string): Promise<PokemonDetail> {
     return await pokemonResponse;
   }
 
-  return [];
+  return null;
+}
+
+export async function getPokemonDetailById(id: number): Promise<PokemonDetail> {
+  const response = await fetch(`${API_URL}/pokemon/${id}`);
+
+  if (response.ok) {
+    const pokemonResponse = response.json() as Promise<PokemonDetail>;
+    return await pokemonResponse;
+  }
+
+  return null;
 }
 
 export async function getPokemonSpecies(
