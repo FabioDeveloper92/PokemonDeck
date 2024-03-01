@@ -80,7 +80,6 @@ export function InputSearchComponent({
       <InputGroup>
         <FloatingLabel controlId="floatingInput" label="Search by Name">
           <Form.Control
-            id="TEST"
             type="text"
             autoComplete="off"
             placeholder="Name"
