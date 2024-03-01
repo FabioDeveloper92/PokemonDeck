@@ -2,27 +2,24 @@ import { useState, useEffect, useRef } from "react";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { Search } from "react-bootstrap-icons";
-import { PokemonBaseData } from "../../../model/api/pokemon-names-response.model";
 import { Button, InputGroup } from "react-bootstrap";
 
 class InputSearchComponentProps {
-  pokemonBaseData: PokemonBaseData[];
+  names: string[];
 
-  onSelectPokemon(pokemon: PokemonBaseData[]): void;
+  onSelectName(value: string): void;
 }
 
 export function InputSearchComponent({
-  pokemonBaseData,
-  onSelectPokemon,
+  names,
+  onSelectName,
 }: InputSearchComponentProps) {
   const searchResultsContainer = useRef(null);
 
   const [showSuggestionsPanel, setShowSuggestionsPanel] =
     useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
-  const [pokemonDataFiltered, setPokemonDataFiltered] = useState<
-    PokemonBaseData[]
-  >([]);
+  const [namesFiltered, setNamesFiltered] = useState<string[]>([]);
 
   useEffect(() => {
     document.addEventListener("click", handleOutsideClick, true);
@@ -46,9 +43,7 @@ export function InputSearchComponent({
     setInputValue(value);
 
     if (value && value.length > 2) {
-      setPokemonDataFiltered(
-        pokemonBaseData.filter((item) => item.name.includes(value))
-      );
+      setNamesFiltered(names.filter((item) => item.includes(value)));
 
       if (!showSuggestionsPanel) setShowSuggestionsPanel(true);
     } else {
@@ -61,22 +56,20 @@ export function InputSearchComponent({
 
     if (showSuggestionsPanel) setShowSuggestionsPanel(false);
 
-    onSelectPokemon(pokemonDataFiltered);
+    onSelectName(inputValue);
   };
 
-  const onClickName = (pokemon: PokemonBaseData) => {
-    setInputValue(pokemon.name);
+  const onClickName = (value: string) => {
+    setInputValue(value);
+    setNamesFiltered(names.filter((item) => item.includes(value)));
+
     if (showSuggestionsPanel) setShowSuggestionsPanel(false);
 
-    onSelectPokemon([pokemon]);
+    onSelectName(value);
   };
 
   return (
-    <Form
-      ref={searchResultsContainer}
-      onSubmit={(e) => onSubmitForm(e)}
-      className="w-50 mb-4 mx-auto"
-    >
+    <Form ref={searchResultsContainer} onSubmit={(e) => onSubmitForm(e)}>
       <InputGroup>
         <FloatingLabel controlId="floatingInput" label="Search by Name">
           <Form.Control
@@ -92,24 +85,20 @@ export function InputSearchComponent({
           <Search />
         </Button>
 
-        {showSuggestionsPanel &&
-          pokemonDataFiltered &&
-          pokemonDataFiltered.length > 0 && (
-            <div className="autocomplete-items">
-              {pokemonDataFiltered
-                .slice(0, 5)
-                .map((item: PokemonBaseData, index: number) => (
-                  <div
-                    key={index}
-                    role="presentation"
-                    onClick={(_) => onClickName(item)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {item.name}
-                  </div>
-                ))}
-            </div>
-          )}
+        {showSuggestionsPanel && namesFiltered && namesFiltered.length > 0 && (
+          <div className="autocomplete-items">
+            {namesFiltered.slice(0, 5).map((item, index) => (
+              <div
+                key={index}
+                role="presentation"
+                onClick={(_) => onClickName(item)}
+                style={{ cursor: "pointer" }}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        )}
       </InputGroup>
     </Form>
   );

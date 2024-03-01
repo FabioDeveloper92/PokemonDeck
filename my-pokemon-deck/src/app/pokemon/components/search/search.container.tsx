@@ -4,7 +4,7 @@ import { makeMultipleAPICalls } from "../../services/generic.service";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { InputSearchComponent } from "./components/input-search.components";
+import { InputSearchComponent } from "../common/input-search.components";
 import { PokemonListRecapComponent } from "./components/pokemon-list-recap.components";
 import { PokemonBaseData } from "../../model/api/pokemon-names-response.model";
 import { PokemonDetail } from "../../model/api/pokemon-detail.model";
@@ -23,7 +23,8 @@ export function SearchContainer() {
   const [isLoadingList, setIsLoadingList] = useState<boolean>(false);
 
   const [myDeck, setMyDeck] = useState<PokemonDetail[]>(null);
-  const [pokemonNames, setPokemonNames] = useState<PokemonBaseData[]>([]);
+  const [pokemonNames, setPokemonNames] = useState<string[]>([]);
+  const [pokemonBaseData, setPokemonBaseData] = useState<PokemonBaseData[]>([]);
   const [pokemonList, setPokemonList] = useState<PokemonDetail[]>([]);
 
   const [showModalResultAfterInsert, setShowModalResultAfterInsert] =
@@ -35,7 +36,8 @@ export function SearchContainer() {
   useEffect(() => {
     const init = async () => {
       const pokemonNames = await getAllPokemonName();
-      setPokemonNames(pokemonNames);
+      setPokemonNames(pokemonNames.map((x) => x.name));
+      setPokemonBaseData(pokemonNames);
     };
     init();
 
@@ -43,12 +45,18 @@ export function SearchContainer() {
     setMyDeck(myDeck);
   }, []);
 
-  function onSelectName(pokemon: PokemonBaseData[]) {
+  function onSelectName(value: string) {
     setIsLoadingList(true);
+
+    const pokemonUrls = pokemonBaseData
+      .filter((x) => x.name.includes(value))
+      .map((x) => x.url);
+
     const multipleAPICalls = async () => {
       const pokemonScheda = await makeMultipleAPICalls<PokemonDetail>(
-        pokemon.map((x) => x.url)
+        pokemonUrls
       );
+
       setPokemonList(pokemonScheda);
       setIsLoadingList(false);
     };
@@ -100,10 +108,12 @@ export function SearchContainer() {
       <Container className="mb-3">
         <Row>
           <Col xs={12}>
-            <InputSearchComponent
-              pokemonBaseData={pokemonNames}
-              onSelectPokemon={onSelectName}
-            />
+            <div className="w-50 mb-4 mx-auto">
+              <InputSearchComponent
+                names={pokemonNames}
+                onSelectName={onSelectName}
+              />
+            </div>
           </Col>
           <Col xs={12}>
             <PokemonListRecapComponent

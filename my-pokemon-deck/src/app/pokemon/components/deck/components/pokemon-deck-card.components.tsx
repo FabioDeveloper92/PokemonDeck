@@ -7,29 +7,32 @@ import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { PokemonTypesComponent } from "../../common/pokemon-types.components";
 
-class PokemonDeckCardProps {
+class PokemonDeckCardComponentProps {
   pokemon: PokemonDetail;
 
   onRemovePokemon(pokemon: PokemonDetail): void;
 }
 
-export function PokemonDeckCard({
+export function PokemonDeckCardComponent({
   pokemon,
   onRemovePokemon,
-}: PokemonDeckCardProps) {
+}: PokemonDeckCardComponentProps) {
   const onClickRemove = () => {
     onRemovePokemon(pokemon);
   };
 
   return (
-    <Col xs={12} sm={12} md={3} className="d-flex align-items-stretch">
+    <Col xs={12} sm={12} md={4} className="d-flex align-items-stretch">
       <Card className="shadow mb-3 w-100" style={{ cursor: "pointer" }}>
         <Card.Img
           className="py-2 bg-dark bg-gradient"
           height={125}
           title={pokemon.name}
           alt={pokemon.name}
-          src={pokemon.sprites.other.dream_world.front_default ?? "/img/no-image.svg"}
+          src={
+            pokemon.sprites.other.dream_world.front_default ??
+            "/img/no-image.svg"
+          }
         ></Card.Img>
         <Card.Body>
           <Card.Subtitle className="mb-2">

@@ -93,7 +93,7 @@ export function DetailContainer() {
             );
 
           const missingItems = b.damage_relations.double_damage_from
-            .filter((x) => a.some((y) => y.type.name !== x.name))
+            .filter((x) => a.every((y) => y.type.name !== x.name))
             .map((x) => new Type(0, new TypeInfo(x.name, x.url)));
 
           return missingItems.length > 0 ? a.concat(missingItems) : a;
@@ -106,7 +106,7 @@ export function DetailContainer() {
             );
 
           const missingItems = b.damage_relations.double_damage_to
-            .filter((x) => a.some((y) => y.type.name !== x.name))
+            .filter((x) => a.every((y) => y.type.name !== x.name))
             .map((x) => new Type(0, new TypeInfo(x.name, x.url)));
 
           return missingItems.length > 0 ? a.concat(missingItems) : a;
