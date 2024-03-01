@@ -1,4 +1,5 @@
 import { PokemonDetail } from "../../../model/api/pokemon-detail.model";
+import { PokemonTypesComponent } from "../../common/pokemon-types.components";
 
 class PokemonDetailTitleComponentProps {
   pokemon: PokemonDetail;
@@ -7,7 +8,7 @@ class PokemonDetailTitleComponentProps {
 
 export function PokemonDetailTitleComponent({
   pokemon,
-  titleType
+  titleType,
 }: PokemonDetailTitleComponentProps) {
   const renderPokemonId = (): string => {
     let idNormalize = `000${pokemon.id}`;
@@ -20,6 +21,7 @@ export function PokemonDetailTitleComponent({
 
   return (
     <>
+      <PokemonTypesComponent types={pokemon.types} />
       <h2 className={`${titleType ?? "h2"} text-capitalize`}>
         {pokemon.name} <span className="text-muted">{renderPokemonId()}</span>
       </h2>

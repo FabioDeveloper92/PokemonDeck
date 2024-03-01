@@ -19,15 +19,19 @@ export function PokemonCarouselComponent({
     let updImages = [];
 
     if (sprites) {
-
-      updImages.push(new CarouselImage(sprites.other.dream_world.front_default, ''));
+      if (sprites.other?.dream_world?.front_default)
+        updImages.push(
+          new CarouselImage(sprites.other.dream_world.front_default, "")
+        );
 
       const myKeys = Object.keys(sprites);
       myKeys.forEach((k) => {
         let value = sprites[k];
-        
+
         if (value && (typeof value === "string" || value instanceof String))
-          updImages.push(new CarouselImage(value as string, k.replace("_", " ")));
+          updImages.push(
+            new CarouselImage(value as string, k.replace("_", " "))
+          );
       });
     }
 
@@ -39,11 +43,11 @@ export function PokemonCarouselComponent({
   return (
     <>
       {images && (
-        <Carousel interval={null}>
+        <Carousel interval={null} className="h-100 bg-dark bg-gradient rounded">
           {images.map((img, index) => (
             <Carousel.Item key={index}>
               <Image
-                className="py-2 px-2 bg-dark bg-gradient w-100 rounded"
+                className="py-2 px-2"
                 height={300}
                 title={name}
                 alt={name}

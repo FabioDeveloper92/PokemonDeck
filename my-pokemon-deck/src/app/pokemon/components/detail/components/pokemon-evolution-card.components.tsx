@@ -51,7 +51,6 @@ export function PokemonEvolutionsCardComponent({
                     titleType="h5"
                   />
                 </div>
-                <PokemonTypesComponent types={pokemon?.types} />
               </Card.Body>
             </Link>
           </Card>

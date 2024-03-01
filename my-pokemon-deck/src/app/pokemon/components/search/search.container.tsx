@@ -37,7 +37,7 @@ export function SearchContainer() {
 
   function onSelectName(pokemon: PokemonBaseData[]) {
     const multipleAPICalls = async () => {
-      const pokemonScheda = await makeMultipleAPICalls(
+      const pokemonScheda = await makeMultipleAPICalls<PokemonDetail>(
         pokemon.map((x) => x.url)
       );
       setPokemonList(pokemonScheda);
@@ -109,7 +109,8 @@ export function SearchContainer() {
             <>
               You have reached the maximum capacity of your deck.
               <br />
-              If you continue the first pokemon inserted will be removed. Do you want continue?
+              If you continue the first pokemon inserted will be removed. Do you
+              want continue?
             </>
           )}
           {resultAfterInsertMsg === AddMyDeckResultEnum.PokemonFoundError && (

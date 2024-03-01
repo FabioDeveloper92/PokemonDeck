@@ -9,16 +9,17 @@ import { makeAPICall } from "../../../services/generic.service";
 import { PokemonAbility } from "../../../model/api/pokemon-ability.model";
 import { PokemonSpecies } from "../../../model/api/pokemon-species.model";
 import { GenderMale, GenderFemale, Ban } from "react-bootstrap-icons";
+import { convertDecimetersToInch, convertHectogramToLibs } from "../../../../common/utities/utilities.model";
 
-class PokemonAbilitiesComponentProps {
+class PokemonBaseInfoComponentProps {
   pokemonDetail: PokemonDetail;
   pokemonSpecies: PokemonSpecies;
 }
 
-export function PokemonAbilitiesComponent({
+export function PokemonBaseInfoComponent({
   pokemonDetail,
   pokemonSpecies,
-}: PokemonAbilitiesComponentProps) {
+}: PokemonBaseInfoComponentProps) {
   const [pokemonAbilityToShow, setPokemonAbilityToShow] =
     useState<string>(null);
   const [pokemonAbility, setPokemonAbility] = useState<string>(null);
@@ -41,21 +42,21 @@ export function PokemonAbilitiesComponent({
 
     if (pokemonSpecies.gender_rate === 0) {
       return (
-          <span className="text-capitalize fw-bold">
-            <GenderMale title="Male" />
-          </span>
+        <span className="text-capitalize fw-bold">
+          <GenderMale title="Male" />
+        </span>
       );
     }
 
     if (pokemonSpecies.gender_rate === 8) {
       return (
-          <span className="text-capitalize fw-bold">
-            <GenderFemale title="Female" />
-          </span>
+        <span className="text-capitalize fw-bold">
+          <GenderFemale title="Female" />
+        </span>
       );
     }
 
-    if (!pokemonSpecies.has_gender_differences) {
+    if (pokemonSpecies.gender_rate > 0 && pokemonSpecies.gender_rate < 8) {
       return (
         <>
           <span className="text-capitalize fw-bold">
@@ -69,17 +70,27 @@ export function PokemonAbilitiesComponent({
     return renderValue("N.D.");
   };
 
-  const renderValue = (value: any) => {
-    return <span className="text-capitalize fw-bold">{value}</span>;
+  const renderValue = (value: string) => {
+    return <span className="fw-bold">{value}</span>;
+  };
+
+  const renderHeigthValue = (value: number) => {
+    const convertValueStr = convertDecimetersToInch(value)
+    return renderValue(convertValueStr);
+  };
+
+  const renderWeigthValue = (value: number) => {
+    const convertValueStr = convertHectogramToLibs(value);
+    return renderValue(convertValueStr);
   };
 
   const onOpenAbilities = (ability: Ability) => {
     setPokemonAbilityToShow(ability.ability.name.replace("-", " "));
 
     const getAbilityDescription = async (abilityToSearch: Ability) => {
-      const pokemonAbility = (await makeAPICall(
+      const pokemonAbility = await makeAPICall<PokemonAbility>(
         abilityToSearch.ability.url
-      )) as PokemonAbility;
+      );
 
       if (
         pokemonAbility.flavor_text_entries &&
@@ -105,16 +116,16 @@ export function PokemonAbilitiesComponent({
   };
 
   return (
-    <Row className="bg-primary opacity-75 text-white rounded py-4">
+    <Row className="bg-primary opacity-75 text-white rounded py-4 m-0">
       <Col xs={6}>
         <Row>
           <Col xs={12} className="mb-2">
             {renderTitle("Height")}
-            {renderValue(pokemonDetail.height)}
+            {renderHeigthValue(pokemonDetail.height)}
           </Col>
           <Col xs={12} className="mb-2">
             {renderTitle("Weight")}
-            {renderValue(`${pokemonDetail.weight} lbs`)}
+            {renderWeigthValue(pokemonDetail.weight)}
           </Col>
           <Col xs={12} className="mb-2">
             {renderTitle("Gender")}
@@ -126,7 +137,7 @@ export function PokemonAbilitiesComponent({
         <Row>
           <Col xs={12} className="mb-2">
             {renderTitle("Base Experience")}
-            {renderValue(pokemonDetail.base_experience)}
+            {renderValue(`${pokemonDetail.base_experience}`)}
           </Col>
           <Col xs={12} className="mb-2">
             {renderTitle("Category")}
@@ -136,7 +147,7 @@ export function PokemonAbilitiesComponent({
                 ))
               : "N.D."}
           </Col>
-          <Col xs={12} className="mb-2">
+          <Col xs={12} className="mb-2 text-capitalize">
             {renderTitle("Abilities")}
             {pokemonDetail.abilities.map((ability, index) => (
               <div key={index}>
