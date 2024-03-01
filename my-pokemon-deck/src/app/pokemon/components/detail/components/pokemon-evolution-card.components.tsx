@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import { Species } from "../../../model/api/pokemon-evolutions.model";
 import { PokemonDetail } from "../../../model/api/pokemon-detail.model";
-import NoImage from "../../../../../img/no-image.svg";
 import { getPokemonDetail } from "../../../services/pokemon.service";
-import { PokemonTypesComponent } from "../../common/pokemon-types.components";
 import { PokemonDetailTitleComponent } from "./pokemon-detail-title.components";
 import { Link } from "react-router-dom";
 
@@ -41,7 +39,7 @@ export function PokemonEvolutionsCardComponent({
                 title={pokemon.name}
                 alt={pokemon.name}
                 src={
-                  pokemon.sprites?.other?.dream_world?.front_default ?? NoImage
+                  pokemon.sprites?.other?.dream_world?.front_default ?? "/img/no-image.svg"
                 }
               />
               <Card.Body>

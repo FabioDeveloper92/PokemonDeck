@@ -1,6 +1,6 @@
 export enum AddMyDeckResultEnum {
   Success,
   MaxCapacity,
-  PokemonFoundError,
+  PokemonFound,
   GenericError,
 }

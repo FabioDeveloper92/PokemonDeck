@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Carousel, Image } from "react-bootstrap";
-import NoImage from "../../../../../img/no-image.svg";
 import { Sprites } from "../../../model/api/pokemon-detail.model";
 import { CarouselImage } from "../../../model/internal/carousel-image.model";
 
@@ -35,7 +34,10 @@ export function PokemonCarouselComponent({
       });
     }
 
-    if (updImages.length === 0) updImages.push(NoImage);
+    if (updImages.length === 0)
+      updImages.push(
+        new CarouselImage("/img/no-image.svg", "")
+      );
 
     setImages(updImages);
   }, [sprites]);

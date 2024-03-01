@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { Search } from "react-bootstrap-icons";
-import { PokemonBaseData } from "../../../model/api/pokemon-response.model";
+import { PokemonBaseData } from "../../../model/api/pokemon-names-response.model";
 import { Button, InputGroup } from "react-bootstrap";
 
 class InputSearchComponentProps {
@@ -15,6 +15,8 @@ export function InputSearchComponent({
   pokemonBaseData,
   onSelectPokemon,
 }: InputSearchComponentProps) {
+  const searchResultsContainer = useRef(null);
+
   const [showSuggestionsPanel, setShowSuggestionsPanel] =
     useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
@@ -22,12 +24,20 @@ export function InputSearchComponent({
     PokemonBaseData[]
   >([]);
 
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick, true);
+  }, []);
+
   const onFocusInput = () => {
     setShowSuggestionsPanel(true);
   };
 
-  const onBlurInput = () => {
-    setShowSuggestionsPanel(false);
+  const handleOutsideClick = (event) => {
+    if (
+      searchResultsContainer?.current &&
+      !searchResultsContainer.current.contains(event.target)
+    )
+      setShowSuggestionsPanel(false);
   };
 
   const handleInputChange = (event) => {
@@ -46,8 +56,8 @@ export function InputSearchComponent({
     }
   };
 
-  const onSubmitForm = (e) => {
-    e.preventDefault();
+  const onSubmitForm = (event) => {
+    event.preventDefault();
 
     if (showSuggestionsPanel) setShowSuggestionsPanel(false);
 
@@ -62,17 +72,20 @@ export function InputSearchComponent({
   };
 
   return (
-    <Form onSubmit={(e) => onSubmitForm(e)} className="w-50 mb-4 mx-auto">
+    <Form
+      ref={searchResultsContainer}
+      onSubmit={(e) => onSubmitForm(e)}
+      className="w-50 mb-4 mx-auto"
+    >
       <InputGroup>
         <FloatingLabel controlId="floatingInput" label="Search by Name">
           <Form.Control
             id="TEST"
             type="text"
-            autoComplete="false"
+            autoComplete="off"
             placeholder="Name"
             value={inputValue}
             onFocus={(_) => onFocusInput()}
-            onBlur={(_) => onBlurInput()}
             onChange={handleInputChange}
           />
         </FloatingLabel>

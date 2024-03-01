@@ -3,14 +3,17 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Image } from "react-bootstrap";
-import Logo from "../../../img/logo.svg";
 
 export function NavBarComponent() {
   return (
     <Navbar expand="lg" className="bg-body-secondary">
       <Container>
         <Link to="/" className="navbar-brand">
-          <Image src={Logo} width={30} className="me-2" />
+          <Image
+            src="/img/logo.svg"
+            width={30}
+            className="me-2"
+          />
           My Pokemon Deck
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

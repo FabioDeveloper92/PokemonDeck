@@ -1,5 +1,5 @@
-import { PokemonBaseData } from "../model/api/pokemon-response.model";
-import { PokemonResponse } from "../model/api/pokemon-response.model";
+import { PokemonBaseData } from "../model/api/pokemon-names-response.model";
+import { PokemonNamesResponse } from "../model/api/pokemon-names-response.model";
 import { PokemonSpecies } from "../model/api/pokemon-species.model";
 import { PokemonEvolutions } from "../model/api/pokemon-evolutions.model";
 import { PokemonDetail } from "../model/api/pokemon-detail.model";
@@ -10,7 +10,7 @@ export async function getAllPokemonName(): Promise<PokemonBaseData[]> {
   const response = await fetch(`${API_URL}/pokemon/?limit=100000`);
 
   if (response.ok) {
-    const pokemonResponse = response.json() as Promise<PokemonResponse>;
+    const pokemonResponse = response.json() as Promise<PokemonNamesResponse>;
     return (await pokemonResponse).results;
   }
 

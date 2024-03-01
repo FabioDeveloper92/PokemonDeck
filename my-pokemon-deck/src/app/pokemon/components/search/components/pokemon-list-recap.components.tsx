@@ -1,23 +1,28 @@
 import { useState, useEffect, Fragment } from "react";
 import ReactPaginate from "react-paginate";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Spinner } from "react-bootstrap";
 import { PokemonDetail } from "../../../model/api/pokemon-detail.model";
 import { PokemonCardComponent } from "./pokemon-card.components";
 
-class PokemonListRecapProps {
+class PokemonListRecapComponentProps {
+  pokemonDeck: PokemonDetail[];
   pokemonList: PokemonDetail[];
+  isLoadingList: boolean;
 
   onAddPokemon(pokemon: PokemonDetail): void;
 }
 
-export function PokemonListRecap({
+export function PokemonListRecapComponent({
   pokemonList,
+  isLoadingList,
+  pokemonDeck,
+
   onAddPokemon,
-}: PokemonListRecapProps) {
-  const ITEMS_PER_PAGE = 4;
+}: PokemonListRecapComponentProps) {
+  const ITEMS_PER_PAGE: number = 4;
   const [originalList, setOriginalList] = useState<PokemonDetail[]>(null);
   const [filterList, setFilterList] = useState<PokemonDetail[]>(null);
-  const [pageCount, setPageCount] = useState(0);
+  const [pageCount, setPageCount] = useState<number>(0);
 
   useEffect(() => {
     setOriginalList(pokemonList);
@@ -41,6 +46,16 @@ export function PokemonListRecap({
 
   return (
     <Container>
+      {isLoadingList && (
+        <Row>
+          <Col xs={12}>
+            <Spinner variant="primary" animation="border" role="status">
+              <span className="visually-hidden"></span>
+            </Spinner>
+            We are searching...
+          </Col>
+        </Row>
+      )}
       <Row>
         {originalList && originalList.length > 0 && (
           <Col xs={12} className="mb-3">
@@ -53,12 +68,15 @@ export function PokemonListRecap({
             <Fragment key={index}>
               <PokemonCardComponent
                 pokemon={pokemon}
+                alreadyInDeck={pokemonDeck
+                  ?.filter((x) => x.id === pokemon.id)
+                  ?.some((x) => x)}
                 onSelectPokemon={onSelectPokemon}
               />
             </Fragment>
           ))}
 
-        {originalList && originalList.length > 0 && (
+        {originalList && originalList.length > ITEMS_PER_PAGE && (
           <ReactPaginate
             className="pagination justify-content-center mt-4"
             previousClassName="page-item"

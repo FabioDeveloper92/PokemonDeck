@@ -5,7 +5,6 @@ import {
 } from "../../../model/api/pokemon-detail.model";
 import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import NoImage from "../../../../../img/no-image.svg";
 import { PokemonTypesComponent } from "../../common/pokemon-types.components";
 
 class PokemonDeckCardProps {
@@ -30,7 +29,7 @@ export function PokemonDeckCard({
           height={125}
           title={pokemon.name}
           alt={pokemon.name}
-          src={pokemon.sprites.other.dream_world.front_default ?? NoImage}
+          src={pokemon.sprites.other.dream_world.front_default ?? "/img/no-image.svg"}
         ></Card.Img>
         <Card.Body>
           <Card.Subtitle className="mb-2">

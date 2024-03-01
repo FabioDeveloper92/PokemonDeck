@@ -1,26 +1,31 @@
 import { PokemonDetail } from "../model/api/pokemon-detail.model";
 import { AddMyDeckResultEnum } from "../model/enum/AddMyDeckResultEnum.enum";
+import { AddMyDeckResult } from "../model/internal/add-my-deck-result.model";
 
 const MYDECK_KEY: string = "mydeck_key";
 export const MAX_ITEM_DECK: number = 10;
 
-export function checkIsAvailableToAdd(
-  pokemon: PokemonDetail
-): AddMyDeckResultEnum {
+export function checkIsAvailableToAdd(pokemon: PokemonDetail): AddMyDeckResult {
   let myDeck = localStorage.getItem(MYDECK_KEY);
 
   let myDeckObj: PokemonDetail[] = [];
   if (myDeck) myDeckObj = JSON.parse(myDeck);
 
   if (myDeckObj.find((x: PokemonDetail) => x.id === pokemon.id))
-    return AddMyDeckResultEnum.PokemonFoundError;
+    return new AddMyDeckResult(AddMyDeckResultEnum.PokemonFound, "");
 
-  if (myDeckObj.length > MAX_ITEM_DECK) return AddMyDeckResultEnum.MaxCapacity;
+  if (myDeckObj.length > MAX_ITEM_DECK) {
+    const pokemonNameToRemove = myDeckObj[0].name;
+    return new AddMyDeckResult(
+      AddMyDeckResultEnum.MaxCapacity,
+      pokemonNameToRemove
+    );
+  }
 
-  return AddMyDeckResultEnum.Success;
+  return new AddMyDeckResult(AddMyDeckResultEnum.Success, "");
 }
 
-export function addMyDeck(pokemon: PokemonDetail): AddMyDeckResultEnum {
+export function addMyDeck(pokemon: PokemonDetail): AddMyDeckResult {
   let myDeck = localStorage.getItem(MYDECK_KEY);
 
   let myDeckObj: PokemonDetail[] = [];
@@ -30,7 +35,7 @@ export function addMyDeck(pokemon: PokemonDetail): AddMyDeckResultEnum {
   let myDeckStr = JSON.stringify(myDeckObj);
   localStorage.setItem(MYDECK_KEY, myDeckStr);
 
-  return AddMyDeckResultEnum.Success;
+  return new AddMyDeckResult(AddMyDeckResultEnum.Success, "");
 }
 
 export function removeFirstPokemonFromMyDesk(): void {
