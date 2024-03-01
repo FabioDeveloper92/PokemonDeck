@@ -14,7 +14,7 @@ export function checkIsAvailableToAdd(pokemon: PokemonDetail): AddMyDeckResult {
   if (myDeckObj.find((x: PokemonDetail) => x.id === pokemon.id))
     return new AddMyDeckResult(AddMyDeckResultEnum.PokemonFound, "");
 
-  if (myDeckObj.length > MAX_ITEM_DECK) {
+  if (myDeckObj.length >= MAX_ITEM_DECK) {
     const pokemonNameToRemove = myDeckObj[0].name;
     return new AddMyDeckResult(
       AddMyDeckResultEnum.MaxCapacity,

@@ -17,7 +17,7 @@ export function NavBarComponent() {
     <Navbar expand="lg" className="navbar-dark bg-primary">
       <Container>
         <Link to="/" className="navbar-brand">
-          <Image src="/img/logo.svg" width={30} className="me-2" />
+          <Image src="/img/logo.svg" width={30} className="me-2 mb-1" />
           My Pokemon Deck
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
