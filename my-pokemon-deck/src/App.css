@@ -37,10 +37,20 @@
   }
 }
 
+.pokemon-detail-carousel .carousel-inner {
+  height: 100%;
+}
+
+.text-shadow-white {
+  text-shadow: 2px 2px #fff;
+}
+
 .page-header-image {
   height: 300px;
   width: 100%;
-  background-color: red;
+  background-image: url("../public/img/page-header.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -14,8 +14,8 @@ export function PageHeaderComponent({
       <Row>
         <Col xs={12} className="p-0">
           <div className="page-header-image">
-            <div className="h2 fw-normal">{title}</div>
-            <div className="h6 fw-normal" dangerouslySetInnerHTML={{ __html: subtitle }}></div>
+            <div className="h2 fw-normal text-shadow-white">{title}</div>
+            <div className="h6 fw-normal text-shadow-white" dangerouslySetInnerHTML={{ __html: subtitle }}></div>
           </div>
         </Col>
       </Row>

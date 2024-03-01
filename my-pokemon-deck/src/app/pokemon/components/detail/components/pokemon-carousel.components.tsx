@@ -43,17 +43,16 @@ export function PokemonCarouselComponent({
   return (
     <>
       {images && (
-        <Carousel interval={null} className="h-100 bg-dark bg-gradient rounded">
+        <Carousel
+          interval={null}
+          className="pokemon-detail-carousel h-100 bg-dark bg-gradient rounded"
+        >
           {images.map((img, index) => (
-            <Carousel.Item key={index}>
-              <Image
-                className="py-2 px-2"
-                height={300}
-                title={name}
-                alt={name}
-                src={img.url}
-              />
-              <Carousel.Caption>{img.description}</Carousel.Caption>
+            <Carousel.Item key={index} className="h-100">
+              <div className="d-flex align-items-center justify-content-center h-100">
+                <Image height={300} title={name} alt={name} src={img.url} />
+                <Carousel.Caption>{img.description}</Carousel.Caption>
+              </div>
             </Carousel.Item>
           ))}
         </Carousel>
