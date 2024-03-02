@@ -153,13 +153,11 @@ export function DetailContainer() {
           title="Pokemon not found"
           subtitle="Sorry but this pokemon doesn't exist"
         >
-          <div>
-            <Button variant="primary mt-2">
-              <Link to="/pokedex" className="text-decoration-none text-white">
-                <Search className="mb-md-1 me-2" /> Research
-              </Link>
-            </Button>
-          </div>
+          <Button variant="primary mt-2">
+            <Link to="/pokedex" className="text-decoration-none text-white">
+              <Search className="mb-md-1 me-2" /> Research
+            </Link>
+          </Button>
         </PageHeaderComponent>
       )}
       {pokemonDetail && !isLoading && (

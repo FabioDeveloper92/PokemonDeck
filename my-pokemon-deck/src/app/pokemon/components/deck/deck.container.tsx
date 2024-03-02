@@ -275,13 +275,15 @@ export function DeckContainer() {
                     />
                   </Col>
                   <Col xs="12" md={2}>
-                    <div className="form-floating">
-                      <Button
-                        variant="outline-danger"
-                        onClick={(_) => onOpenModalClearDeck()}
-                      >
-                        <Trash className="mb-md-1" /> Clear
-                      </Button>
+                    <div className="d-flex">
+                      <div className="h-100 mt-2 ms-auto">
+                        <Button
+                          variant="outline-danger"
+                          onClick={(_) => onOpenModalClearDeck()}
+                        >
+                          <Trash className="mb-md-1" /> Clear
+                        </Button>
+                      </div>
                     </div>
                   </Col>
                 </Row>
