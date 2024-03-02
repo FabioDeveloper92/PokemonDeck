@@ -15,7 +15,11 @@ export function PokemonTrainingInfoComponent({
   species,
 }: PokemonTrainingInfoComponentProps) {
   const renderTitle = (title: string) => {
-    return <div className="h6 mb-1 text-black text-capitalize">{title ?? "Unknow"}</div>;
+    return (
+      <div className="h6 mb-1 text-black text-capitalize">
+        {title ?? "Unknow"}
+      </div>
+    );
   };
 
   const renderRarity = () => {
@@ -45,6 +49,7 @@ export function PokemonTrainingInfoComponent({
           <span className="h6 mb-1 text-black">Base Friendship</span>
           <ProgressBar
             className="progressbar-label-start border"
+            title={`${species?.base_happiness ?? 0} / 255`}
             now={species?.base_happiness ?? 0}
             label={`${species?.base_happiness ?? 0} / 255`}
             max={255}
@@ -53,6 +58,7 @@ export function PokemonTrainingInfoComponent({
         <Col xs={12} className="mb-2">
           {renderTitle("Capture rate")}
           <ProgressBar
+            title={`${species?.capture_rate ?? 0} / 255`}
             className="progressbar-label-start border"
             variant="info"
             now={species?.capture_rate ?? 0}
