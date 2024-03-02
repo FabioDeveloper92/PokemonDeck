@@ -138,7 +138,7 @@ export function DetailContainer() {
 
   return (
     <>
-      {true && (
+      {isLoading && (
         <PageHeaderComponent
           title="Pokemon Search"
           subtitle="We search your pokemon..."
