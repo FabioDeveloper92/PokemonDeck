@@ -8,6 +8,7 @@ import { OrderBy } from "../../model/internal/order-by.model";
 import { RemoveMyDeckResultEnum } from "../../model/enum/RemoveMyDeckResultEnum.enum";
 import {
   getMyDeck,
+  removeAllPokemonFromMyDesk,
   removePokemonFromMyDesk,
 } from "../../services/storage.service";
 import { PokemonDeckCardComponent } from "./components/pokemon-deck-card.components";
@@ -18,6 +19,8 @@ import { FilterByNameComponent } from "../common/filter-by-name.components";
 import { FilterByCheckBoxComponent } from "../common/filter-by-checkbox.components";
 import { OrderByComponent } from "../common/order-by.components";
 import { DeckBaseInfoComponent } from "./components/deck-base-info.components";
+import { Search, Trash } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 
 export function DeckContainer() {
   const [myDeck, setMyDeck] = useState<PokemonDetail[]>([]);
@@ -44,6 +47,8 @@ export function DeckContainer() {
   const [removeMsg, setRemoveMsg] = useState<RemoveMyDeckResultEnum>(null);
   const [showModalRemovePokemon, setShowModalRemovePokemon] =
     useState<boolean>(false);
+  const [showModalClearDeck, setShowModalClearDeck] = useState<boolean>(false);
+  const [clearDeckMsg, setClearDeckMsg] = useState<string>("");
 
   useEffect(() => {
     loadMyDeck();
@@ -159,6 +164,26 @@ export function DeckContainer() {
     }
   };
 
+  const onOpenModalClearDeck = () => {
+    setShowModalClearDeck(true);
+    setClearDeckMsg(null);
+  };
+
+  const onCloseModalClearDeck = () => {
+    setShowModalClearDeck(false);
+    setPokemonToRemove(null);
+  };
+
+  const onConfirmClearDeck = () => {
+    let result = removeAllPokemonFromMyDesk();
+    if (result) {
+      loadMyDeck();
+      setClearDeckMsg("Remove all cards.");
+    } else {
+      setClearDeckMsg("An error occurred, try again or contact support");
+    }
+  };
+
   const onSelectedTypes = (selectedValues: FilterByCheckBoxValue[]) => {
     setFilterByTypeActive(selectedValues);
     filterMyDeck(selectedValues, filterByNameActive, orderByActive);
@@ -212,60 +237,111 @@ export function DeckContainer() {
         subtitle="Check your pokemon and experience!"
       />
       <Container>
-        <Row>
-          <Col xs={12} md={3}>
-            <div className="mb-4 bg-light p-2 shadow rounded">
-              <DeckBaseInfoComponent
-                totalBaseExperience={totalBaseExperience}
-                deckCardNumber={myDeck.length}
-              />
-            </div>
-            <div className="mb-4 bg-light p-2 shadow rounded">
-              <PokemonStatsComponent
-                title="Deck Stats"
-                stats={totalDeckStats}
-                maxStats={maxTotalStats}
-              />
-            </div>
-            <FilterByCheckBoxComponent
-              title="Types"
-              values={typeToFilter}
-              onSelected={onSelectedTypes}
-            />
-          </Col>
-          <Col xs={12} md={9}>
-            <Row className="m-0">
-              <Col xs="12" md={8}>
-                <FilterByNameComponent
-                  names={nameToFilter}
-                  onFilterByName={onFilterByName}
+        {myDeck && myDeck.length > 0 && (
+          <>
+            <Row>
+              <Col xs={12} md={3}>
+                <div className="mb-4 bg-light p-2 shadow rounded">
+                  <DeckBaseInfoComponent
+                    totalBaseExperience={totalBaseExperience}
+                    deckCardNumber={myDeck.length}
+                  />
+                </div>
+                <div className="mb-4 bg-light p-2 shadow rounded">
+                  <PokemonStatsComponent
+                    title="Deck Stats"
+                    stats={totalDeckStats}
+                    maxStats={maxTotalStats}
+                  />
+                </div>
+                <FilterByCheckBoxComponent
+                  title="Types"
+                  values={typeToFilter}
+                  onSelected={onSelectedTypes}
                 />
               </Col>
-              <Col xs="12" md={4}>
-                <OrderByComponent
-                  values={orderByValues}
-                  onChangeOrderBy={onChangeOrderBy}
-                />
+              <Col xs={12} md={9}>
+                <Row className="m-0">
+                  <Col xs="12" md={6}>
+                    <FilterByNameComponent
+                      names={nameToFilter}
+                      onFilterByName={onFilterByName}
+                    />
+                  </Col>
+                  <Col xs="12" md={4}>
+                    <OrderByComponent
+                      values={orderByValues}
+                      onChangeOrderBy={onChangeOrderBy}
+                    />
+                  </Col>
+                  <Col xs="12" md={2}>
+                    <Button
+                      variant="outline-danger"
+                      onClick={(_) => onOpenModalClearDeck()}
+                    >
+                      <Trash className="mb-md-1" /> Clear
+                    </Button>
+                  </Col>
+                </Row>
+                {myDeckFilter && (
+                  <Row className="m-0">
+                    {myDeckFilter.map((pokemon, index) => (
+                      <Fragment key={index}>
+                        <PokemonDeckCardComponent
+                          pokemon={pokemon}
+                          onRemovePokemon={onRemovePokemon}
+                        />
+                      </Fragment>
+                    ))}
+                  </Row>
+                )}
+                {(!myDeckFilter || myDeckFilter.length === 0) && (
+                  <>Not pokemon found in this search</>
+                )}
               </Col>
             </Row>
-            {myDeckFilter && (
-              <Row className="m-0">
-                {myDeckFilter.map((pokemon, index) => (
-                  <Fragment key={index}>
-                    <PokemonDeckCardComponent
-                      pokemon={pokemon}
-                      onRemovePokemon={onRemovePokemon}
-                    />
-                  </Fragment>
-                ))}
-              </Row>
-            )}
-            {(!myDeckFilter || myDeckFilter.length === 0) && (
-              <>Not pokemon found in this search</>
-            )}
-          </Col>
-        </Row>
+          </>
+        )}
+        {(!myDeck || myDeck.length === 0) && (
+          <>
+            <div className="h5 fw-normal">
+              Your deck is empty, go to home and collect all
+            </div>
+            <div>
+              <Button variant="primary mt-2">
+                <Link to="/" className="text-decoration-none text-white">
+                  <Search className="mb-md-1 me-2" /> Start collect
+                </Link>
+              </Button>
+            </div>
+          </>
+        )}
       </Container>
+
+      <Modal show={showModalClearDeck} onHide={onCloseModalClearDeck}>
+        <Modal.Header closeButton>
+          <Modal.Title>Clear Deck</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {clearDeckMsg ? (
+            clearDeckMsg
+          ) : (
+            <>Do you want to remove all cards of your</>
+          )}
+          deck?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={onCloseModalClearDeck}>
+            Close
+          </Button>
+          {!clearDeckMsg && (
+            <Button variant="primary" onClick={(_) => onConfirmClearDeck()}>
+              Confirm
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
+
       <Modal show={showModalRemovePokemon} onHide={onCloseModalRemovePokemon}>
         <Modal.Header closeButton>
           <Modal.Title>Remove Pokemon</Modal.Title>

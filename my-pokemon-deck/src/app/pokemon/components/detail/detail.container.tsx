@@ -194,6 +194,7 @@ export function DetailContainer() {
                 maxStats={100}
               />
             </Col>
+            
             <Col xs="12" sm={12} md={6}>
               <PokemonTypesTypeComponent
                 types={pokemonStrengths}

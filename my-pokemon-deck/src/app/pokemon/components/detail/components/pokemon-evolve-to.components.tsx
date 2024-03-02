@@ -16,16 +16,18 @@ export function PokemonEvolveToComponent({
         <>
           {evolvesTo.map((evo, index) => (
             <Fragment key={index}>
-              <li>
-                <div className="h-100 d-flex align-items-center justify-content-center">
-                  <div className="d-none d-sm-none d-md-block">
-                    <CaretRight className="h3" />
+              {index === 0 && (
+                <li>
+                  <div className="h-100 d-flex align-items-center justify-content-center">
+                    <div className="d-none d-sm-none d-md-block">
+                      <CaretRight className="h3" />
+                    </div>
+                    <div className="d-md-none">
+                      <CaretDown className="h3" />
+                    </div>
                   </div>
-                  <div className="d-md-none">
-                    <CaretDown className="h3" />
-                  </div>
-                </div>
-              </li>
+                </li>
+              )}
               <PokemonEvolutionsCardComponent species={evo.species} />
               {evo.evolves_to && (
                 <PokemonEvolveToComponent evolvesTo={evo.evolves_to} />

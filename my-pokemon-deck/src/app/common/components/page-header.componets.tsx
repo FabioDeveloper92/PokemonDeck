@@ -24,9 +24,7 @@ export function PageHeaderComponent({
               dangerouslySetInnerHTML={{ __html: subtitle }}
             ></div>
             {Children.map(children, (child) => (
-              <div className="h6 fw-normal text-black text-shadow-white">
-                {child}
-              </div>
+              <div className="h6 fw-normal">{child}</div>
             ))}
           </div>
         </Col>

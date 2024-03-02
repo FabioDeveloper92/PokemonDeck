@@ -65,6 +65,15 @@ export function removePokemonFromMyDesk(pokemon: PokemonDetail): boolean {
   return true;
 }
 
+export function removeAllPokemonFromMyDesk(): boolean {
+  let myDeck = localStorage.getItem(MYDECK_KEY);
+  if (!myDeck) return false;
+
+  localStorage.removeItem(MYDECK_KEY);
+
+  return true;
+}
+
 export function getMyDeck(): PokemonDetail[] {
   let myDeck = localStorage.getItem(MYDECK_KEY);
   let myDeckObj: PokemonDetail[] = [];
