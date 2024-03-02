@@ -5,6 +5,7 @@ import { DeckContainer } from "./app/pokemon/components/deck/deck.container";
 import { DetailContainer } from "./app/pokemon/components/detail/detail.container";
 import { NotFoundComponent } from "./app/common/components/not-found.components";
 import { FooterComponent } from "./app/common/components/footer.components";
+import { PokedexContainer } from "./app/pokemon/components/pokedex/pokedex.container";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route exact path="/" element={<SearchContainer />}></Route>
           <Route exact path="/deck" element={<DeckContainer />}></Route>
           <Route exact path="/detail/:id" element={<DetailContainer />}></Route>
+          <Route exact path="/pokedex" element={<PokedexContainer />}></Route>
           <Route path="*" element={<NotFoundComponent />}></Route>
         </Routes>
         <FooterComponent />

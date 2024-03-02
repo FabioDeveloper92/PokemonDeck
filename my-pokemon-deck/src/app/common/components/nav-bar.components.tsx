@@ -33,6 +33,11 @@ export function NavBarComponent() {
                 My Deck
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link as={Link} eventKey="/pokedex" to="/pokedex">
+                Pokedex
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
         </Navbar.Collapse>
       </Container>

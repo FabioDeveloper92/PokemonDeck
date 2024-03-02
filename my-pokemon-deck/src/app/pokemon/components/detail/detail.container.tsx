@@ -12,6 +12,7 @@ import {
 } from "../../model/api/pokemon-detail.model";
 import { PokemonType } from "../../model/api/pokemon-type.model";
 import {
+  getPokemonDetail,
   getPokemonDetailById,
   getPokemonSpecies,
 } from "../../services/pokemon.service";
@@ -43,9 +44,6 @@ export function DetailContainer() {
   useEffect(() => {
     setIsLoading(true);
 
-    const pokemonId = Number(params.id);
-    const myPokemon = getPokemonDetailFromMyDeck(pokemonId);
-
     const init = async (id: number) => {
       const pokemonSpec = await getPokemonSpecies(id, "en");
       if (
@@ -66,18 +64,31 @@ export function DetailContainer() {
       setIsLoading(false);
     };
 
-    if (myPokemon) {
-      setPokemonDetail(myPokemon);
-      init(myPokemon.id);
+    const pokemonId = Number(params.id);
+    if (pokemonId) {
+      const myPokemon = getPokemonDetailFromMyDeck(pokemonId);
+      if (myPokemon) {
+        setPokemonDetail(myPokemon);
+        init(myPokemon.id);
+      } else {
+        const getPokemon = async (id: number) => {
+          const myPokemon = await getPokemonDetailById(id);
+          setPokemonDetail(myPokemon);
+
+          if (myPokemon) init(myPokemon.id);
+          else setIsLoading(false);
+        };
+        getPokemon(pokemonId);
+      }
     } else {
-      const getPokemon = async (id: number) => {
-        const myPokemon = await getPokemonDetailById(id);
+      const getPokemonByName = async (name: string) => {
+        const myPokemon = await getPokemonDetail(name);
         setPokemonDetail(myPokemon);
 
         if (myPokemon) init(myPokemon.id);
         else setIsLoading(false);
       };
-      getPokemon(pokemonId);
+      getPokemonByName(params.id);
     }
 
     window.scrollTo(0, 0);

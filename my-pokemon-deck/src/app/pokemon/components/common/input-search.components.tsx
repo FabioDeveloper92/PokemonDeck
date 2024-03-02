@@ -6,12 +6,15 @@ import { Button, InputGroup } from "react-bootstrap";
 
 class InputSearchComponentProps {
   names: string[];
+  exactlyMatch: boolean;
 
   onSelectName(value: string): void;
 }
 
 export function InputSearchComponent({
   names,
+  exactlyMatch,
+
   onSelectName,
 }: InputSearchComponentProps) {
   const searchResultsContainer = useRef(null);
@@ -59,8 +62,7 @@ export function InputSearchComponent({
     event.preventDefault();
 
     if (showSuggestionsPanel) setShowSuggestionsPanel(false);
-
-    onSelectName(inputValue);
+    if (!exactlyMatch) onSelectName(inputValue);
   };
 
   const onClickName = (value: string) => {
@@ -85,9 +87,11 @@ export function InputSearchComponent({
             onChange={handleInputChange}
           />
         </FloatingLabel>
-        <Button type="submit" disabled={!isValidSearch}>
-          <Search />
-        </Button>
+        {!exactlyMatch && (
+          <Button type="submit" disabled={!isValidSearch}>
+            <Search />
+          </Button>
+        )}
 
         {showSuggestionsPanel && namesFiltered && namesFiltered.length > 0 && (
           <div className="autocomplete-items">

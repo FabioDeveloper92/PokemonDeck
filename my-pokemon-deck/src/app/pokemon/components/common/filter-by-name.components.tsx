@@ -16,7 +16,11 @@ export function FilterByNameComponent({
 
   return (
     <div className="mb-4">
-      <InputSearchComponent names={names} onSelectName={onSelectName} />
+      <InputSearchComponent
+        names={names}
+        onSelectName={onSelectName}
+        exactlyMatch={false}
+      />
     </div>
   );
 }

@@ -112,6 +112,7 @@ export function SearchContainer() {
               <InputSearchComponent
                 names={pokemonNames}
                 onSelectName={onSelectName}
+                exactlyMatch={false}
               />
             </div>
           </Col>
