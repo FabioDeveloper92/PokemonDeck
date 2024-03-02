@@ -27,11 +27,13 @@ export function PokemonStatsComponent({
     <>
       {stats && (
         <>
-          <div className={`mb-2 ${customTitleClass ?? "h4 text-start"}`}>{title}</div>
+          <div className={`mb-2 ${customTitleClass ?? "h4 text-start"}`}>
+            {title}
+          </div>
           {stats.map((stat: Stat, index: number) => (
             <div key={index} className="mb-3">
               <ProgressBar
-                title={stat.stat.name}
+                title={`${stat.stat.name}: ${stat.base_stat}`}
                 className="progressbar-label-start border"
                 variant={getVariant(stat.stat.name)}
                 now={stat.base_stat}

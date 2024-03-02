@@ -13,6 +13,7 @@ import {
   convertDecimetersToInch,
   convertHectogramToLibs,
 } from "../../../../common/utities/utilities.model";
+import { PokemonAbilityDescriptionModal } from "./pokemon-ability-description-modal.components";
 
 class PokemonBaseInfoComponentProps {
   pokemonDetail: PokemonDetail;
@@ -177,14 +178,12 @@ export function PokemonBaseInfoComponent({
           ))}
         </Col>
       </Col>
-      <Modal show={showModal} onHide={onCloseTooltip}>
-        <Modal.Header closeButton>
-          <Modal.Title className="text-capitalize">
-            {pokemonAbilityToShow}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{pokemonAbility ?? "Not Available"}</Modal.Body>
-      </Modal>
+      <PokemonAbilityDescriptionModal
+        showModal={showModal}
+        title={pokemonAbilityToShow}
+        message={pokemonAbility}
+        onClose={onCloseTooltip}
+      />
     </Row>
   );
 }

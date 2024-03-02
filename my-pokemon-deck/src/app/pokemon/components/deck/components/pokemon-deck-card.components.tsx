@@ -23,7 +23,7 @@ export function PokemonDeckCardComponent({
 
   return (
     <Col xs={12} sm={12} md={4} className="d-flex align-items-stretch">
-      <Card className="shadow mb-3 w-100" style={{ cursor: "pointer" }}>
+      <Card className="shadow mb-3 w-100">
         <Card.Img
           className="py-2 bg-dark bg-gradient"
           height={125}

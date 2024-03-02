@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { PokemonCarouselComponent } from "./components/pokemon-carousel.components";
 import { getPokemonDetailFromMyDeck } from "../../services/storage.service";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   PokemonDetail,
   Type,
@@ -28,6 +28,7 @@ import { PokemonDetailTitleComponent } from "./components/pokemon-detail-title.c
 import { PageHeaderComponent } from "../../../common/components/page-header.componets";
 import { Spinner } from "react-bootstrap";
 import { PokemonTrainingInfoComponent } from "./components/pokemon-training-info.components";
+import { Search } from "react-bootstrap-icons";
 
 export function DetailContainer() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -151,7 +152,15 @@ export function DetailContainer() {
         <PageHeaderComponent
           title="Pokemon not found"
           subtitle="Sorry but this pokemon doesn't exist"
-        />
+        >
+          <div>
+            <Button variant="primary mt-2">
+              <Link to="/pokedex" className="text-decoration-none text-white">
+                <Search className="mb-md-1 me-2" /> Research
+              </Link>
+            </Button>
+          </div>
+        </PageHeaderComponent>
       )}
       {pokemonDetail && !isLoading && (
         <Container className="mt-3 mb-3">

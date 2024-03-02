@@ -36,13 +36,17 @@ export function PokemonTrainingInfoComponent({
   return (
     <>
       <Row className="m-0">
-        <Col xs={6}>
-          {renderTitle("Rarity")}
-          {renderRarity()}
+        <Col xs={12} md={6}>
+          <div className="d-none d-ms-none d-md-block">
+            {renderTitle("Rarity")}
+            {renderRarity()}
+          </div>
         </Col>
 
-        <Col xs={6} className="mb-2 text-capitalize">
-          {renderTitle("Growth Rate")} {species.growth_rate.name}
+        <Col xs={12} md={6} className="mb-2 text-capitalize">
+          <div className="d-none d-ms-none d-md-block">
+            {renderTitle("Growth Rate")} {species.growth_rate.name}
+          </div>
         </Col>
 
         <Col xs={12} className="mb-2">
