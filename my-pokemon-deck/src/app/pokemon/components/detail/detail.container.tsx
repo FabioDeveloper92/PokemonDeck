@@ -189,7 +189,7 @@ export function DetailContainer() {
               <PokemonStatsComponent
                 title="Stats"
                 stats={pokemonDetail.stats}
-                maxStats={100}
+                maxStats={180}
               />
             </Col>
 

@@ -152,7 +152,9 @@ export function PokemonBaseInfoComponent({
           </Col>
           <Col xs={12} className="mb-2 text-capitalize">
             {renderTitle("Habitat")}
-            {renderValue(pokemonSpecies.habitat?.name ?? "Unknow")}
+            {pokemonSpecies
+              ? renderValue(pokemonSpecies.habitat?.name ?? "Unknow")
+              : "Unknow"}
           </Col>
         </Row>
       </Col>

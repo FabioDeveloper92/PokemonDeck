@@ -30,7 +30,7 @@ export function PokedexContainer() {
     <>
       <PageHeaderComponent
         title="Pokedex"
-        subtitle="Search pokemon information"
+        subtitle="Search pokemon and get all informations"
       />
       <Container className="mb-3">
         <Row>

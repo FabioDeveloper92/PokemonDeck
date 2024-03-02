@@ -233,7 +233,7 @@ export function DeckContainer() {
     <>
       <PageHeaderComponent
         title="My Deck"
-        subtitle="Check your pokemon and experience!"
+        subtitle="Check your deck and show it at your friends!"
       />
       <Container>
         {myDeck && myDeck.length > 0 && (
