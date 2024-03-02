@@ -261,7 +261,7 @@ export function DeckContainer() {
               </Row>
             )}
             {(!myDeckFilter || myDeckFilter.length === 0) && (
-              <>Not pokemon found this search</>
+              <>Not pokemon found in this search</>
             )}
           </Col>
         </Row>

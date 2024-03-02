@@ -1,4 +1,4 @@
-import { Form } from "react-bootstrap";
+import { FloatingLabel, Form } from "react-bootstrap";
 import { OrderBy } from "../../model/internal/order-by.model";
 
 class OrderByComponentProps {
@@ -19,16 +19,18 @@ export function OrderByComponent({
     <>
       {values && values.length > 0 && (
         <div className="mb-4">
-          <Form.Select
-            className="text-capitalize fw-light text-start mb-2"
-            onChange={(e) => onChangeSelect(e)}
-          >
-            {values.map((value, index) => (
-              <option key={index} value={value.id}>
-                {value.value}
-              </option>
-            ))}
-          </Form.Select>
+          <FloatingLabel controlId="floatingInput" label="Order by">
+            <Form.Select
+              className="text-capitalize fw-light text-start mb-2"
+              onChange={(e) => onChangeSelect(e)}
+            >
+              {values.map((value, index) => (
+                <option key={index} value={value.id}>
+                  {value.value}
+                </option>
+              ))}
+            </Form.Select>
+          </FloatingLabel>
         </div>
       )}
     </>
