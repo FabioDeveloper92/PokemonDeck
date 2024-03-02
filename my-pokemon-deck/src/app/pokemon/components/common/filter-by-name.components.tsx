@@ -15,8 +15,7 @@ export function FilterByNameComponent({
   };
 
   return (
-    <div className="mb-4 bg-light p-2 shadow rounded">
-      <div className="text-start h6 mb-2 form-check">Filter by Name</div>
+    <div className="mb-4">
       <InputSearchComponent names={names} onSelectName={onSelectName} />
     </div>
   );

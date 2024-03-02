@@ -18,8 +18,7 @@ export function OrderByComponent({
   return (
     <>
       {values && values.length > 0 && (
-        <div className="mb-4 bg-light p-2 shadow rounded">
-          <div className="text-start h6 mb-2 form-check">Order By</div>
+        <div className="mb-4">
           <Form.Select
             className="text-capitalize fw-light text-start mb-2"
             onChange={(e) => onChangeSelect(e)}

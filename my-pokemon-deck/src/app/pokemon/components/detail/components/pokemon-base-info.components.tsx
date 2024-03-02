@@ -33,7 +33,7 @@ export function PokemonBaseInfoComponent({
   };
 
   const renderGender = () => {
-    if (!pokemonSpecies) return renderValue("N.D.");
+    if (!pokemonSpecies) return renderValue("Unknow");
 
     if (pokemonSpecies.gender_rate === -1) {
       return (
@@ -70,7 +70,7 @@ export function PokemonBaseInfoComponent({
       );
     }
 
-    return renderValue("N.D.");
+    return renderValue("Unknow");
   };
 
   const renderValue = (value: string) => {
@@ -140,7 +140,7 @@ export function PokemonBaseInfoComponent({
         <Row>
           <Col xs={12} className="mb-2">
             {renderTitle("Base Experience")}
-            {renderValue(`${pokemonDetail.base_experience}`)}
+            {renderValue(`${pokemonDetail.base_experience ?? "Unknow"}`)}
           </Col>
           <Col xs={12} className="mb-2">
             {renderTitle("Category")}
@@ -148,11 +148,11 @@ export function PokemonBaseInfoComponent({
               ? pokemonSpecies.genera.map((genera, index) => (
                   <div key={index}>{renderValue(genera.genus)}</div>
                 ))
-              : "N.D."}
+              : "Unknow"}
           </Col>
           <Col xs={12} className="mb-2 text-capitalize">
             {renderTitle("Habitat")}
-            {renderValue(pokemonSpecies.habitat?.name ?? "N.D.")}
+            {renderValue(pokemonSpecies.habitat?.name ?? "Unknow")}
           </Col>
         </Row>
       </Col>

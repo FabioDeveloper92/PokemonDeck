@@ -2,32 +2,35 @@ import { useEffect, useState, Fragment } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { PokemonDetail } from "../../model/api/pokemon-detail.model";
+import { PokemonDetail, Stat } from "../../model/api/pokemon-detail.model";
 import { FilterByCheckBoxValue } from "../../model/internal/filter-by-checkbox-value.model";
 import { OrderBy } from "../../model/internal/order-by.model";
 import { RemoveMyDeckResultEnum } from "../../model/enum/RemoveMyDeckResultEnum.enum";
 import {
   getMyDeck,
-  MAX_ITEM_DECK,
   removePokemonFromMyDesk,
 } from "../../services/storage.service";
 import { PokemonDeckCardComponent } from "./components/pokemon-deck-card.components";
+import { PokemonStatsComponent } from "../detail/components/pokemon-stats.components";
 import { Button, Modal } from "react-bootstrap";
 import { PageHeaderComponent } from "../../../common/components/page-header.componets";
 import { FilterByNameComponent } from "../common/filter-by-name.components";
 import { FilterByCheckBoxComponent } from "../common/filter-by-checkbox.components";
 import { OrderByComponent } from "../common/order-by.components";
+import { DeckBaseInfoComponent } from "./components/deck-base-info.components";
 
 export function DeckContainer() {
   const [myDeck, setMyDeck] = useState<PokemonDetail[]>([]);
   const [myDeckFilter, setMyDeckFilter] = useState<PokemonDetail[]>([]);
   const [totalBaseExperience, setTotalBaseExperience] = useState<number>(0);
-  const [statusClassName, setStatusClassName] = useState<string>("");
 
   const [orderByValues] = useState<OrderBy[]>([
     new OrderBy("name", "Name"),
     new OrderBy("experience", "Base Experience"),
   ]);
+
+  const [maxTotalStats, setMaxTotalStats] = useState<number>(0);
+  const [totalDeckStats, setTotalDeckStats] = useState<Stat[]>(null);
   const [nameToFilter, setNameToFilter] = useState<string[]>(null);
   const [typeToFilter, setTypeToFilter] =
     useState<FilterByCheckBoxValue[]>(null);
@@ -43,28 +46,56 @@ export function DeckContainer() {
     useState<boolean>(false);
 
   useEffect(() => {
-    loadMyDesk();
+    loadMyDeck();
   }, []);
 
-  function loadMyDesk() {
+  const loadMyDeck = () => {
     let myDeckObj = getMyDeck();
     setMyDeck(myDeckObj);
 
-    if (myDeckObj.length < MAX_ITEM_DECK) setStatusClassName("text-warning");
-    else if (myDeckObj.length === MAX_ITEM_DECK)
-      setStatusClassName("text-success");
-    else setStatusClassName("text-danger");
-
-    let totalBE = 0;
-    if (myDeckObj && myDeckObj.length > 0) {
-      totalBE = myDeckObj.map((x) => x.base_experience).reduce(reducer);
-      myDeckObj = myDeckObj.sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    setTotalBaseExperience(totalBE);
-    setMyDeckFilter(myDeckObj);
-
+    calculateBaseInfo(myDeckObj);
     prepareFilterValues(myDeckObj);
+  };
+
+  function calculateBaseInfo(myDeckObj: PokemonDetail[]) {
+    if (myDeckObj) {
+      let totalBE = 0;
+      let totalDeckStat: Stat[] = [];
+      if (myDeckObj && myDeckObj.length > 0) {
+        totalBE = myDeckObj
+          .map((x) => x.base_experience)
+          .reduce(
+            (accumulator: number, currentValue: number, index: number) => {
+              const returns = accumulator + currentValue;
+              return returns;
+            }
+          );
+
+        myDeckObj
+          .map((x) => x.stats)
+          .reduce(function (a, b) {
+            return a.concat(b);
+          }, [])
+          .forEach((item) => {
+            let updItem = totalDeckStat.find(
+              (x) => x.stat.name === item.stat.name
+            );
+
+            if (updItem) {
+              updItem.base_stat += item.base_stat;
+            } else {
+              totalDeckStat.push(item);
+            }
+          });
+
+        myDeckObj = myDeckObj.sort((a, b) => a.name.localeCompare(b.name));
+      }
+
+      setMyDeckFilter(myDeckObj);
+      setTotalBaseExperience(totalBE);
+      setMaxTotalStats(100 * myDeckObj.length);
+      setTotalDeckStats(totalDeckStat);
+    }
   }
 
   function prepareFilterValues(myDeckObj: PokemonDetail[]) {
@@ -107,11 +138,6 @@ export function DeckContainer() {
     setTypeToFilter(updFilterByTypes);
   }
 
-  function reducer(accumulator: number, currentValue: number, index: number) {
-    const returns = accumulator + currentValue;
-    return returns;
-  }
-
   const onCloseModalRemovePokemon = () => {
     setShowModalRemovePokemon(false);
     setPokemonToRemove(null);
@@ -121,6 +147,16 @@ export function DeckContainer() {
     setPokemonToRemove(pokemon);
     setRemoveMsg(RemoveMyDeckResultEnum.ToConfirm);
     setShowModalRemovePokemon(true);
+  };
+
+  const onConfirmRemovePokemon = () => {
+    let result = removePokemonFromMyDesk(pokemonToRemove);
+    if (result) {
+      loadMyDeck();
+      setRemoveMsg(RemoveMyDeckResultEnum.Success);
+    } else {
+      setRemoveMsg(RemoveMyDeckResultEnum.GenericError);
+    }
   };
 
   const onSelectedTypes = (selectedValues: FilterByCheckBoxValue[]) => {
@@ -169,16 +205,6 @@ export function DeckContainer() {
     setMyDeckFilter(updFilterItems);
   };
 
-  const onConfirmRemovePokemon = () => {
-    let result = removePokemonFromMyDesk(pokemonToRemove);
-    if (result) {
-      loadMyDesk();
-      setRemoveMsg(RemoveMyDeckResultEnum.Success);
-    } else {
-      setRemoveMsg(RemoveMyDeckResultEnum.GenericError);
-    }
-  };
-
   return (
     <>
       <PageHeaderComponent
@@ -187,30 +213,20 @@ export function DeckContainer() {
       />
       <Container>
         <Row>
-          <Col xs={12} className="mb-2">
-            <div className="h5">
-              Your deck is
-              {myDeck.length === 0 && <> Empty</>}
-              {myDeck.length < MAX_ITEM_DECK && <> to complete</>}
-              {myDeck.length === MAX_ITEM_DECK && <> Full</>}(
-              <span className={statusClassName}>
-                {myDeck.length}/{MAX_ITEM_DECK}
-              </span>
-              )
-            </div>
-            <div>Your pokemon experience is {totalBaseExperience}</div>
-          </Col>
-        </Row>
-        <Row>
           <Col xs={12} md={3}>
-            <OrderByComponent
-              values={orderByValues}
-              onChangeOrderBy={onChangeOrderBy}
-            />
-            <FilterByNameComponent
-              names={nameToFilter}
-              onFilterByName={onFilterByName}
-            />
+            <div className="mb-4 bg-light p-2 shadow rounded">
+              <DeckBaseInfoComponent
+                totalBaseExperience={totalBaseExperience}
+                deckCardNumber={myDeck.length}
+              />
+            </div>
+            <div className="mb-4 bg-light p-2 shadow rounded">
+              <PokemonStatsComponent
+                title="Deck Stats"
+                stats={totalDeckStats}
+                maxStats={maxTotalStats}
+              />
+            </div>
             <FilterByCheckBoxComponent
               title="Types"
               values={typeToFilter}
@@ -218,6 +234,20 @@ export function DeckContainer() {
             />
           </Col>
           <Col xs={12} md={9}>
+            <Row className="m-0">
+              <Col xs="12" md={8}>
+                <FilterByNameComponent
+                  names={nameToFilter}
+                  onFilterByName={onFilterByName}
+                />
+              </Col>
+              <Col xs="12" md={4}>
+                <OrderByComponent
+                  values={orderByValues}
+                  onChangeOrderBy={onChangeOrderBy}
+                />
+              </Col>
+            </Row>
             {myDeckFilter && (
               <Row className="m-0">
                 {myDeckFilter.map((pokemon, index) => (

@@ -42,7 +42,7 @@ export function PokemonDeckCardComponent({
             {pokemon.name}
           </Card.Title>
           <Card.Text className="mb-1 fw-normal text-start">
-            <small>Experience:</small> {pokemon.base_experience ?? "N.D."}
+            <small>Experience:</small> {pokemon.base_experience ?? "Unknow"}
           </Card.Text>
           <Card.Text className="mb-2 fw-normal text-start">
             <ul className="list-group list-group-numbered">

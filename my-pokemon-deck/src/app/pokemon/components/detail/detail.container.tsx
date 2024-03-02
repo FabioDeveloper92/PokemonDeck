@@ -172,7 +172,11 @@ export function DetailContainer() {
           </Row>
           <Row className="mt-3 mb-3 bg-light shadow rounded">
             <Col xs="12" sm={12} md={6}>
-              <PokemonStatsComponent stats={pokemonDetail.stats} />
+              <PokemonStatsComponent
+                title="Stats"
+                stats={pokemonDetail.stats}
+                maxStats={100}
+              />
             </Col>
             <Col xs="12" sm={12} md={6}>
               <PokemonTypesTypeComponent

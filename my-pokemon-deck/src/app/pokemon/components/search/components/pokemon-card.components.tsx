@@ -44,7 +44,7 @@ export function PokemonCardComponent({
             {pokemon.name}
           </Card.Title>
           <Card.Subtitle className="mb-3 fw-normal">
-            <small>My experience is</small> {pokemon.base_experience ?? "N.D."}
+            <small>My experience is</small> {pokemon.base_experience ?? "Unknow"}
           </Card.Subtitle>
           <Card.Text className="mb-2 fw-normal text-start">
             <ul className="list-group">
