@@ -144,8 +144,8 @@ export function DeckContainer() {
   }
 
   const onCloseModalRemovePokemon = () => {
-    setShowModalRemovePokemon(false);
     setPokemonToRemove(null);
+    setShowModalRemovePokemon(false);
   };
 
   const onRemovePokemon = (pokemon: PokemonDetail) => {

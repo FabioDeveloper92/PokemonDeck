@@ -31,7 +31,7 @@ export function RemovePokemonModalComponent({
         {message === RemoveMyDeckResultEnum.ToConfirm && (
           <>
             Do you want to remove{" "}
-            <b className="text-capitalize">{pokemonToRemove.name}</b> from your
+            <b className="text-capitalize">{pokemonToRemove?.name}</b> from your
             deck?
           </>
         )}
