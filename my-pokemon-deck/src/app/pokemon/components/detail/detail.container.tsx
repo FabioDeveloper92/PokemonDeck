@@ -48,21 +48,7 @@ export function DetailContainer() {
     const init = async (id: number) => {
       const pokemonSpec = await getPokemonSpecies(id, "en");
 
-      if (
-        pokemonSpec &&
-        pokemonSpec.evolution_chain &&
-        pokemonSpec.evolution_chain.url
-      ) {
-        const pokemonEvo = await makeAPICall<PokemonEvolutions>(
-          pokemonSpec.evolution_chain.url
-        );
-        setPokemonEvolutions(pokemonEvo);
-      } else {
-        setPokemonEvolutions(null);
-      }
-
       setPokemonSpecies(pokemonSpec);
-
       setIsLoading(false);
     };
 
@@ -136,6 +122,21 @@ export function DetailContainer() {
       multipleAPICalls();
     }
   }, [pokemonDetail]);
+
+  useEffect(() => {
+    if (pokemonSpecies?.evolution_chain?.url) {
+      const init = async (id: number) => {
+        const pokemonEvo = await makeAPICall<PokemonEvolutions>(
+          pokemonSpecies.evolution_chain.url
+        );
+        setPokemonEvolutions(pokemonEvo);
+      };
+
+      init(pokemonDetail.id);
+    } else {
+      setPokemonEvolutions(null);
+    }
+  }, [pokemonSpecies]);
 
   return (
     <>

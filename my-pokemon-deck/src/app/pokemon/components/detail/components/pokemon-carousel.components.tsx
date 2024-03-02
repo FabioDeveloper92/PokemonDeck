@@ -23,21 +23,37 @@ export function PokemonCarouselComponent({
           new CarouselImage(sprites.other.dream_world.front_default, "")
         );
 
-      const myKeys = Object.keys(sprites);
-      myKeys.forEach((k) => {
-        let value = sprites[k];
+      if (sprites.front_default)
+        updImages.push(new CarouselImage(sprites.front_default, "Front"));
 
-        if (value && (typeof value === "string" || value instanceof String))
-          updImages.push(
-            new CarouselImage(value as string, k.replace("_", " "))
-          );
-      });
+      if (sprites.back_default)
+        updImages.push(new CarouselImage(sprites.back_default, "Back"));
+
+      if (sprites.front_female)
+        updImages.push(new CarouselImage(sprites.front_female, "Front Female"));
+
+      if (sprites.back_female)
+        updImages.push(new CarouselImage(sprites.back_female, "Back Female"));
+
+      if (sprites.front_shiny)
+        updImages.push(new CarouselImage(sprites.front_shiny, "Front Shiny"));
+
+      if (sprites.back_shiny)
+        updImages.push(new CarouselImage(sprites.back_shiny, "Back Shiny"));
+
+      if (sprites.front_shiny_female)
+        updImages.push(
+          new CarouselImage(sprites.front_shiny, "Front Female Shiny")
+        );
+
+      if (sprites.back_shiny_female)
+        updImages.push(
+          new CarouselImage(sprites.back_shiny_female, "Back Female Shiny")
+        );
     }
 
     if (updImages.length === 0)
-      updImages.push(
-        new CarouselImage("/img/no-image.svg", "")
-      );
+      updImages.push(new CarouselImage("/img/no-image.svg", ""));
 
     setImages(updImages);
   }, [sprites]);
