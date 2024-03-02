@@ -4,11 +4,12 @@ import { SearchContainer } from "./app/pokemon/components/search/search.containe
 import { DeckContainer } from "./app/pokemon/components/deck/deck.container";
 import { DetailContainer } from "./app/pokemon/components/detail/detail.container";
 import { NotFoundComponent } from "./app/common/components/not-found.components";
+import { FooterComponent } from "./app/common/components/footer.components";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="App d-flex flex-column min-vh-100">
         <NavBarComponent />
         <Routes>
           <Route exact path="/" element={<SearchContainer />}></Route>
@@ -16,6 +17,7 @@ function App() {
           <Route exact path="/detail/:id" element={<DetailContainer />}></Route>
           <Route path="*" element={<NotFoundComponent />}></Route>
         </Routes>
+        <FooterComponent />
       </div>
     </BrowserRouter>
   );

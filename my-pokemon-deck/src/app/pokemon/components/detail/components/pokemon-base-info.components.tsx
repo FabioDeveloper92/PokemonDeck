@@ -9,7 +9,10 @@ import { makeAPICall } from "../../../services/generic.service";
 import { PokemonAbility } from "../../../model/api/pokemon-ability.model";
 import { PokemonSpecies } from "../../../model/api/pokemon-species.model";
 import { GenderMale, GenderFemale, Ban } from "react-bootstrap-icons";
-import { convertDecimetersToInch, convertHectogramToLibs } from "../../../../common/utities/utilities.model";
+import {
+  convertDecimetersToInch,
+  convertHectogramToLibs,
+} from "../../../../common/utities/utilities.model";
 
 class PokemonBaseInfoComponentProps {
   pokemonDetail: PokemonDetail;
@@ -75,7 +78,7 @@ export function PokemonBaseInfoComponent({
   };
 
   const renderHeigthValue = (value: number) => {
-    const convertValueStr = convertDecimetersToInch(value)
+    const convertValueStr = convertDecimetersToInch(value);
     return renderValue(convertValueStr);
   };
 
@@ -117,7 +120,7 @@ export function PokemonBaseInfoComponent({
 
   return (
     <Row className="bg-primary opacity-75 text-white rounded py-4 m-0">
-      <Col xs={6}>
+      <Col xs={4}>
         <Row>
           <Col xs={12} className="mb-2">
             {renderTitle("Height")}
@@ -133,7 +136,7 @@ export function PokemonBaseInfoComponent({
           </Col>
         </Row>
       </Col>
-      <Col xs={6}>
+      <Col xs={4}>
         <Row>
           <Col xs={12} className="mb-2">
             {renderTitle("Base Experience")}
@@ -148,23 +151,29 @@ export function PokemonBaseInfoComponent({
               : "N.D."}
           </Col>
           <Col xs={12} className="mb-2 text-capitalize">
-            {renderTitle("Abilities")}
-            {pokemonDetail.abilities.map((ability, index) => (
-              <div key={index}>
-                {renderValue(ability.ability.name.replace("-", " "))}
-                <small
-                  className="ms-1"
-                  style={{ cursor: "pointer" }}
-                  onClick={(_) => {
-                    onOpenAbilities(ability);
-                  }}
-                >
-                  <InfoCircleFill className="mb-1" />
-                </small>
-              </div>
-            ))}
+            {renderTitle("Habitat")}
+            {renderValue(pokemonSpecies.habitat?.name ?? "N.D.")}
           </Col>
         </Row>
+      </Col>
+      <Col xs={4}>
+        <Col xs={12} className="mb-2 text-capitalize">
+          {renderTitle("Abilities")}
+          {pokemonDetail.abilities.map((ability, index) => (
+            <div key={index}>
+              {renderValue(ability.ability.name.replace("-", " "))}
+              <small
+                className="ms-1"
+                style={{ cursor: "pointer" }}
+                onClick={(_) => {
+                  onOpenAbilities(ability);
+                }}
+              >
+                <InfoCircleFill className="mb-1" />
+              </small>
+            </div>
+          ))}
+        </Col>
       </Col>
       <Modal show={showModal} onHide={onCloseTooltip}>
         <Modal.Header closeButton>

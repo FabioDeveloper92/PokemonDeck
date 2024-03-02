@@ -60,7 +60,7 @@ export function PokemonEvolutionsCardComponent({
               height={125}
               title={species.name}
               alt={species.name}
-              src={NoImage}
+              src="/img/no-image.svg"
             />
             <Card.Body>
               <div className="mb-3 text-center text-capitalize">

@@ -48,7 +48,11 @@ export function DetailContainer() {
 
     const init = async (id: number) => {
       const pokemonSpec = await getPokemonSpecies(id, "en");
-      if (pokemonSpec && pokemonSpec.evolution_chain && pokemonSpec.evolution_chain.url) {
+      if (
+        pokemonSpec &&
+        pokemonSpec.evolution_chain &&
+        pokemonSpec.evolution_chain.url
+      ) {
         const pokemonEvo = await makeAPICall<PokemonEvolutions>(
           pokemonSpec.evolution_chain.url
         );
@@ -166,7 +170,7 @@ export function DetailContainer() {
               </div>
             </Col>
           </Row>
-          <Row className="mt-3">
+          <Row className="mt-3 mb-3 bg-light shadow rounded">
             <Col xs="12" sm={12} md={6}>
               <PokemonStatsComponent stats={pokemonDetail.stats} />
             </Col>
@@ -181,7 +185,7 @@ export function DetailContainer() {
               />
             </Col>
           </Row>
-          <Row>
+          <Row className="bg-light shadow rounded">
             <Col xs="12" sm={12} md={12}>
               <PokemonEvolutionsComponent evolutions={pokemonEvolutions} />
             </Col>

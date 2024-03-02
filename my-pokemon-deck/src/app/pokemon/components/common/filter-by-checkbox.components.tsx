@@ -34,7 +34,7 @@ export function FilterByCheckBoxComponent({
   return (
     <>
       {filterValues && filterValues.length > 0 && (
-        <div className="mb-4 bg-light bg-light p-2 shadow rounded">
+        <div className="mb-4 bg-light p-2 shadow rounded">
           <div className="text-start h6 mb-2 form-check">{title}</div>
           <Form>
             {filterValues.map((val, index) => (
