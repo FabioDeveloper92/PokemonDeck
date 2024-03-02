@@ -29,6 +29,7 @@ import {
 import { PokemonDetailTitleComponent } from "./components/pokemon-detail-title.components";
 import { PageHeaderComponent } from "../../../common/components/page-header.componets";
 import { PokemonTypesTypeComponent } from "./components/pokemon-types-type.components";
+import { Spinner } from "react-bootstrap";
 
 export function DetailContainer() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -137,11 +138,15 @@ export function DetailContainer() {
 
   return (
     <>
-      {isLoading && (
+      {true && (
         <PageHeaderComponent
           title="Pokemon Search"
           subtitle="We search your pokemon..."
-        />
+        >
+          <Spinner variant="primary" animation="border" role="status">
+            <span className="visually-hidden"></span>
+          </Spinner>
+        </PageHeaderComponent>
       )}
       {!pokemonDetail && !isLoading && (
         <PageHeaderComponent
