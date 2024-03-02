@@ -3,7 +3,6 @@ import { AddMyDeckResultEnum } from "../model/enum/AddMyDeckResultEnum.enum";
 import { AddMyDeckResult } from "../model/internal/add-my-deck-result.model";
 
 const MYDECK_KEY: string = "mydeck_key";
-export const MAX_ITEM_DECK: number = 10;
 
 export function checkIsAvailableToAdd(pokemon: PokemonDetail): AddMyDeckResult {
   let myDeck = localStorage.getItem(MYDECK_KEY);

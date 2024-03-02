@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
-import { MAX_ITEM_DECK } from "../../../services/storage.service";
 import { ProgressBar } from "react-bootstrap";
 import { StarFill } from "react-bootstrap-icons";
+import {
+  MAX_STAR,
+  MAX_ITEM_DECK,
+  MAX_EXPERIENCE_VALUE,
+} from "../../../model/constant/app.constant";
 
 class DeckBaseInfoComponentProps {
   totalBaseExperience: number;
@@ -12,10 +16,6 @@ export function DeckBaseInfoComponent({
   totalBaseExperience,
   deckCardNumber,
 }: DeckBaseInfoComponentProps) {
-  // Max experience pokemon can have is 340
-  const MAX_EXPERIENCE_VALUE = 340 * MAX_ITEM_DECK;
-  const MAX_STAR = 5;
-
   const [statusClassName, setStatusClassName] = useState<string>("");
   const [statusName, setStatusName] = useState<string>("");
   const [starNumber, setStarNumber] = useState<number>(0);

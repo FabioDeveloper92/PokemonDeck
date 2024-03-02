@@ -29,6 +29,7 @@ import { PageHeaderComponent } from "../../../common/components/page-header.comp
 import { Spinner } from "react-bootstrap";
 import { PokemonTrainingInfoComponent } from "./components/pokemon-training-info.components";
 import { Search } from "react-bootstrap-icons";
+import { MAX_SKILL_VALUE } from "../../model/constant/app.constant";
 
 export function DetailContainer() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -203,7 +204,7 @@ export function DetailContainer() {
                 <PokemonStatsComponent
                   title="Stats"
                   stats={pokemonDetail.stats}
-                  maxStats={180}
+                  maxStats={MAX_SKILL_VALUE}
                 />
               </div>
             </Col>

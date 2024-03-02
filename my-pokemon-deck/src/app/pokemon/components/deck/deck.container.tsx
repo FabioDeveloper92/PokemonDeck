@@ -20,6 +20,7 @@ import { Search, Trash } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { ClearDeckModalComponent } from "./components/clear-deck-modal.components";
 import { RemovePokemonModalComponent } from "./components/remove-pokemon-modal.components";
+import { MAX_SKILL_VALUE } from "../../model/constant/app.constant";
 
 export function DeckContainer() {
   const [myDeck, setMyDeck] = useState<PokemonDetail[]>([]);
@@ -97,7 +98,7 @@ export function DeckContainer() {
 
       setMyDeckFilter(myDeckObj);
       setTotalBaseExperience(totalBE);
-      setMaxTotalStats(100 * myDeckObj.length);
+      setMaxTotalStats(MAX_SKILL_VALUE * myDeckObj.length);
       setTotalDeckStats(totalDeckStat);
     }
   }
