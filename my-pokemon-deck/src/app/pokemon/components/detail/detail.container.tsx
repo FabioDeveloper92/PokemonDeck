@@ -26,8 +26,8 @@ import {
 } from "../../services/generic.service";
 import { PokemonDetailTitleComponent } from "./components/pokemon-detail-title.components";
 import { PageHeaderComponent } from "../../../common/components/page-header.componets";
-import { PokemonTypesTypeComponent } from "./components/pokemon-types-type.components";
 import { Spinner } from "react-bootstrap";
+import { PokemonTrainingInfoComponent } from "./components/pokemon-training-info.components";
 
 export function DetailContainer() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -45,6 +45,7 @@ export function DetailContainer() {
 
     const init = async (id: number) => {
       const pokemonSpec = await getPokemonSpecies(id, "en");
+
       if (
         pokemonSpec &&
         pokemonSpec.evolution_chain &&
@@ -167,7 +168,7 @@ export function DetailContainer() {
               xs="12"
               sm={12}
               md={7}
-              className="text-start d-flex align-items-stretch"
+              className="text-start d-flex align-items-stretch mt-2"
             >
               <div className="w-100">
                 <PokemonDetailTitleComponent
@@ -185,23 +186,34 @@ export function DetailContainer() {
             </Col>
           </Row>
           <Row className="mt-3 mb-3 bg-light shadow rounded">
-            <Col xs="12" sm={12} md={6}>
-              <PokemonStatsComponent
-                title="Stats"
-                stats={pokemonDetail.stats}
-                maxStats={180}
-              />
+            <Col
+              xs="12"
+              sm={12}
+              md={6}
+              className="text-start d-flex align-items-stretch"
+            >
+              <div className="w-100">
+                <PokemonStatsComponent
+                  title="Stats"
+                  stats={pokemonDetail.stats}
+                  maxStats={180}
+                />
+              </div>
             </Col>
 
-            <Col xs="12" sm={12} md={6}>
-              <PokemonTypesTypeComponent
-                types={pokemonStrengths}
-                title="Strengths"
-              />
-              <PokemonTypesTypeComponent
-                types={pokemonWeakness}
-                title="Weakness"
-              />
+            <Col
+              xs="12"
+              sm={12}
+              md={6}
+              className="text-start d-flex align-items-stretch"
+            >
+              <div className="w-100">
+                <PokemonTrainingInfoComponent
+                  strengths={pokemonStrengths}
+                  weakness={pokemonWeakness}
+                  species={pokemonSpecies}
+                />
+              </div>
             </Col>
           </Row>
           <Row className="bg-light shadow rounded">

@@ -13,9 +13,11 @@ export function PokemonTypesTypeComponent({
   return (
     <>
       {types && types.length > 0 && (
-        <div className="mb-2">
-          <div className="mb-2 h4">{title}</div>
-          <PokemonTypesComponent types={types} />
+        <div className="mb-2 text-start">
+          <div className="d-inline-block h6 mb-2 text-black me-2">{title}</div>
+          <div className="d-inline-block">
+            {<PokemonTypesComponent types={types} />}
+          </div>
         </div>
       )}
     </>
