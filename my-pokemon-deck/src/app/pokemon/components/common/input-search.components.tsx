@@ -21,6 +21,8 @@ export function InputSearchComponent({
   const [inputValue, setInputValue] = useState<string>("");
   const [namesFiltered, setNamesFiltered] = useState<string[]>([]);
 
+  const [isValidSearch, setIsValidSearch] = useState<boolean>(false);
+
   useEffect(() => {
     document.addEventListener("click", handleOutsideClick, true);
   }, []);
@@ -46,8 +48,10 @@ export function InputSearchComponent({
       setNamesFiltered(names.filter((item) => item.includes(value)));
 
       if (!showSuggestionsPanel) setShowSuggestionsPanel(true);
+      if (!isValidSearch) setIsValidSearch(true);
     } else {
       if (showSuggestionsPanel) setShowSuggestionsPanel(false);
+      if (isValidSearch) setIsValidSearch(false);
     }
   };
 
@@ -81,7 +85,7 @@ export function InputSearchComponent({
             onChange={handleInputChange}
           />
         </FloatingLabel>
-        <Button type="submit">
+        <Button type="submit" disabled={!isValidSearch}>
           <Search />
         </Button>
 
