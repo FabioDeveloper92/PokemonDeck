@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Container, Row, Col } from "react-bootstrap";
 import { PokemonCarouselComponent } from "./components/pokemon-carousel.components";
 import { getPokemonDetailFromMyDeck } from "../../services/storage.service";
 import { useParams } from "react-router-dom";
@@ -194,7 +192,7 @@ export function DetailContainer() {
                 maxStats={100}
               />
             </Col>
-            
+
             <Col xs="12" sm={12} md={6}>
               <PokemonTypesTypeComponent
                 types={pokemonStrengths}

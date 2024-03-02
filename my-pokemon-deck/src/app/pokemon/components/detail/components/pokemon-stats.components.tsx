@@ -3,12 +3,16 @@ import { Stat } from "../../../model/api/pokemon-detail.model";
 
 class PokemonStatsComponentProps {
   title: string;
+  customTitleClass?: string;
+
   stats: Stat[];
   maxStats: number;
 }
 
 export function PokemonStatsComponent({
   title,
+  customTitleClass,
+
   stats,
   maxStats,
 }: PokemonStatsComponentProps) {
@@ -24,7 +28,7 @@ export function PokemonStatsComponent({
     <>
       {stats && (
         <>
-          <div className="mb-2 h4">{title}</div>
+          <div className={`mb-2 ${customTitleClass ?? "h4"}`}>{title}</div>
           {stats.map((stat: Stat, index: number) => (
             <div key={index} className="mb-3">
               <ProgressBar

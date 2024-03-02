@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { getAllPokemonName } from "../../services/pokemon.service";
 import { makeMultipleAPICalls } from "../../services/generic.service";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Container, Col, Row } from "react-bootstrap";
 import { InputSearchComponent } from "../common/input-search.components";
 import { PokemonListRecapComponent } from "./components/pokemon-list-recap.components";
 import { PokemonBaseData } from "../../model/api/pokemon-names-response.model";
@@ -15,9 +13,9 @@ import {
   getMyDeck,
   removeFirstPokemonFromMyDesk,
 } from "../../services/storage.service";
-import { Button, Modal } from "react-bootstrap";
 import { AddMyDeckResultEnum } from "../../model/enum/AddMyDeckResultEnum.enum";
 import { AddMyDeckResult } from "../../model/internal/add-my-deck-result.model";
+import { AddPokemonModalComponent } from "./components/add-pokemon-modal.components";
 
 export function SearchContainer() {
   const [isLoadingList, setIsLoadingList] = useState<boolean>(false);
@@ -126,54 +124,12 @@ export function SearchContainer() {
           </Col>
         </Row>
       </Container>
-      <Modal
-        show={showModalResultAfterInsert}
-        onHide={onCloseModalPokemonAddResult}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Add Pokemon</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {resultAfterInsertMsg && (
-            <>
-              {resultAfterInsertMsg.result === AddMyDeckResultEnum.Success && (
-                <>Pokemon added to your deck successfully</>
-              )}
-              {resultAfterInsertMsg.result ===
-                AddMyDeckResultEnum.MaxCapacity && (
-                <>
-                  You have reached the maximum capacity of your deck.
-                  <br />
-                  If you continue <b>{resultAfterInsertMsg.pokemonToRemove} </b>
-                  inserted will be removed.
-                  <br />
-                  <br />
-                  Do you want continue?
-                </>
-              )}
-              {resultAfterInsertMsg.result ===
-                AddMyDeckResultEnum.PokemonFound && (
-                <>Pokemon already present in your deck</>
-              )}
-              {resultAfterInsertMsg.result ===
-                AddMyDeckResultEnum.GenericError && (
-                <>An error occurred, try again or contact support</>
-              )}
-            </>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={onCloseModalPokemonAddResult}>
-            Close
-          </Button>
-          {resultAfterInsertMsg &&
-            resultAfterInsertMsg.result === AddMyDeckResultEnum.MaxCapacity && (
-              <Button variant="primary" onClick={(_) => onForceAddPokemon()}>
-                Continue
-              </Button>
-            )}
-        </Modal.Footer>
-      </Modal>
+      <AddPokemonModalComponent
+        showModal={showModalResultAfterInsert}
+        message={resultAfterInsertMsg}
+        onConfirm={onForceAddPokemon}
+        onClose={onCloseModalPokemonAddResult}
+      />
     </>
   );
 }

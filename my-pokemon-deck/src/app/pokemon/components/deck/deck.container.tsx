@@ -1,7 +1,5 @@
 import { useEffect, useState, Fragment } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Button, Container, Row, Col } from "react-bootstrap";
 import { PokemonDetail, Stat } from "../../model/api/pokemon-detail.model";
 import { FilterByCheckBoxValue } from "../../model/internal/filter-by-checkbox-value.model";
 import { OrderBy } from "../../model/internal/order-by.model";
@@ -13,7 +11,6 @@ import {
 } from "../../services/storage.service";
 import { PokemonDeckCardComponent } from "./components/pokemon-deck-card.components";
 import { PokemonStatsComponent } from "../detail/components/pokemon-stats.components";
-import { Button, Modal } from "react-bootstrap";
 import { PageHeaderComponent } from "../../../common/components/page-header.componets";
 import { FilterByNameComponent } from "../common/filter-by-name.components";
 import { FilterByCheckBoxComponent } from "../common/filter-by-checkbox.components";
@@ -21,6 +18,8 @@ import { OrderByComponent } from "../common/order-by.components";
 import { DeckBaseInfoComponent } from "./components/deck-base-info.components";
 import { Search, Trash } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
+import { ClearDeckModalComponent } from "./components/clear-deck-modal.components";
+import { RemovePokemonModalComponent } from "./components/remove-pokemon-modal.components";
 
 export function DeckContainer() {
   const [myDeck, setMyDeck] = useState<PokemonDetail[]>([]);
@@ -250,6 +249,7 @@ export function DeckContainer() {
                 <div className="mb-4 bg-light p-2 shadow rounded">
                   <PokemonStatsComponent
                     title="Deck Stats"
+                    customTitleClass="text-start h6 mb-2 form-check"
                     stats={totalDeckStats}
                     maxStats={maxTotalStats}
                   />
@@ -318,60 +318,20 @@ export function DeckContainer() {
         )}
       </Container>
 
-      <Modal show={showModalClearDeck} onHide={onCloseModalClearDeck}>
-        <Modal.Header closeButton>
-          <Modal.Title>Clear Deck</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {clearDeckMsg ? (
-            clearDeckMsg
-          ) : (
-            <>Do you want to remove all cards of your</>
-          )}
-          deck?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={onCloseModalClearDeck}>
-            Close
-          </Button>
-          {!clearDeckMsg && (
-            <Button variant="primary" onClick={(_) => onConfirmClearDeck()}>
-              Confirm
-            </Button>
-          )}
-        </Modal.Footer>
-      </Modal>
+      <ClearDeckModalComponent
+        showModal={showModalClearDeck}
+        message={clearDeckMsg}
+        onConfirm={onConfirmClearDeck}
+        onClose={onCloseModalClearDeck}
+      />
 
-      <Modal show={showModalRemovePokemon} onHide={onCloseModalRemovePokemon}>
-        <Modal.Header closeButton>
-          <Modal.Title>Remove Pokemon</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {removeMsg === RemoveMyDeckResultEnum.Success && (
-            <>Pokemon remove to your deck successfully</>
-          )}
-          {removeMsg === RemoveMyDeckResultEnum.ToConfirm && (
-            <>
-              Do you want to remove{" "}
-              <b className="text-capitalize">{pokemonToRemove.name}</b> from
-              your deck?
-            </>
-          )}
-          {removeMsg === RemoveMyDeckResultEnum.GenericError && (
-            <>An error occurred, try again or contact support</>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={onCloseModalRemovePokemon}>
-            Close
-          </Button>
-          {removeMsg === RemoveMyDeckResultEnum.ToConfirm && (
-            <Button variant="primary" onClick={(_) => onConfirmRemovePokemon()}>
-              Confirm
-            </Button>
-          )}
-        </Modal.Footer>
-      </Modal>
+      <RemovePokemonModalComponent
+        showModal={showModalRemovePokemon}
+        message={removeMsg}
+        pokemonToRemove={pokemonToRemove}
+        onConfirm={onConfirmRemovePokemon}
+        onClose={onCloseModalRemovePokemon}
+      />
     </>
   );
 }
