@@ -6,16 +6,16 @@ export function FooterComponent() {
   return (
     <Container fluid className="bg-dark mt-auto">
       <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
-        <small className="col-12 col-sm-12 col-md-4 mb-0 text-white mb-3">2024 MyPokemon Deck</small>
+        <small className="col-12 col-sm-12 col-md-4 mb-0 text-white mb-3 mb-sm-3 mb-md-0">2024 MyPokemon Deck</small>
 
         <Link
           to="/"
-          className="col-12 col-sm-12 col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
+          className="col-12 col-sm-12 col-md-4 d-flex align-items-center justify-content-center mb-3 mb-sm-3 mb-md-0 me-md-auto link-dark text-decoration-none"
         >
           <Image src="/img/logo.svg" width={30} className="me-2 mb-1" />
         </Link>
 
-        <ul className="nav col-12 col-sm-12 col-md-4 justify-content-center">
+        <ul className="nav col-12 col-sm-12 col-md-4 justify-content-center mb-3 mb-sm-3 mb-md-0">
           <li className="nav-item">
             <a
               href="https://pokeapi.co/"
