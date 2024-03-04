@@ -38,7 +38,7 @@ export function FooterComponent() {
           </li>
           <li className="nav-item">
             <a
-              href="https://pokeapi.co/"
+              href="https://github.com/FabioDeveloper92/PokemonDeck_SnCeGroup"
               rel="noreferrer"
               target="_blank"
               className="nav-link px-2 text-white"
