@@ -1,6 +1,7 @@
 import { PokemonDetail } from "../model/api/pokemon-detail.model";
 import { AddMyDeckResultEnum } from "../model/enum/AddMyDeckResultEnum.enum";
 import { AddMyDeckResult } from "../model/internal/add-my-deck-result.model";
+import { MAX_ITEM_DECK } from "../model/constant/app.constant";
 
 const MYDECK_KEY: string = "mydeck_key";
 
